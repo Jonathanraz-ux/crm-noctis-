@@ -3,14 +3,20 @@ import { Download, Plus, Search } from 'lucide-react';
 
 import { DataTable, type Column } from '@/components/data-table';
 import { PageHeader } from '@/components/page-header';
-import { ProspectStatusBadge, ProspectSourceBadge } from '@/components/status-badge';
+import {
+  ProspectStatusBadge,
+  ProspectSourceBadge,
+} from '@/components/status-badge';
 import { ConfirmDialog } from '@/components/confirm-dialog';
 import { Button } from '@/components/ui/button';
 import { NoctisField } from '@/components/noctis-field';
 import { Label, Select } from '@/components/ui/primitives';
 import { useAuth } from '@/providers/AuthProvider';
 import { useToast } from '@/providers/ToastProvider';
-import { useProspects, useDeleteProspect } from '@/features/prospects/prospects.hooks';
+import {
+  useProspects,
+  useDeleteProspect,
+} from '@/features/prospects/prospects.hooks';
 import { ProspectModal } from '@/features/prospects/ProspectModal';
 import type { Prospect } from '@/lib/types/database';
 import { formatDate } from '@/lib/format';
@@ -70,7 +76,10 @@ export function ProspectsPage() {
   const handleDelete = async () => {
     if (!deleteTarget) return;
     try {
-      await deleteMutation.mutateAsync({ organizationId: orgId, id: deleteTarget.id });
+      await deleteMutation.mutateAsync({
+        organizationId: orgId,
+        id: deleteTarget.id,
+      });
       success('Prospect deleted');
     } catch (caught) {
       toastError('Delete failed', toErrorMessage(caught));
@@ -80,15 +89,11 @@ export function ProspectsPage() {
 
   const handleExport = () => {
     if (!data?.prospects?.length) return;
-    exportCsv(data.prospects, `prospects-${new Date().toISOString().slice(0, 10)}.csv`, [
-      'name',
-      'company',
-      'email',
-      'phone',
-      'status',
-      'source',
-      'created_at',
-    ]);
+    exportCsv(
+      data.prospects,
+      `prospects-${new Date().toISOString().slice(0, 10)}.csv`,
+      ['name', 'company', 'email', 'phone', 'status', 'source', 'created_at'],
+    );
   };
 
   const columns: Column<Prospect>[] = [
@@ -99,29 +104,41 @@ export function ProspectsPage() {
       key: 'status',
       header: 'Status',
       sortable: true,
-      render: (row) => <ProspectStatusBadge status={row.status as ProspectStatus} />,
+      render: (row) => (
+        <ProspectStatusBadge status={row.status as ProspectStatus} />
+      ),
     },
     {
       key: 'source',
       header: 'Source',
       sortable: true,
-      render: (row) => <ProspectSourceBadge source={row.source as ProspectSource} />,
+      render: (row) => (
+        <ProspectSourceBadge source={row.source as ProspectSource} />
+      ),
     },
     {
       key: 'created_at',
       header: 'Created',
       sortable: true,
-      render: (row) => <span className="text-foreground-muted">{formatDate(row.created_at)}</span>,
+      render: (row) => (
+        <span className="text-foreground-muted">
+          {formatDate(row.created_at)}
+        </span>
+      ),
     },
   ];
 
   return (
-    <div className="space-y-5 animate-fade-in">
+    <div className="animate-fade-in space-y-5">
       <PageHeader
         title="Prospects"
         description="Manage your sales leads and prospective accounts."
       >
-        <Button leftIcon={<Download className="size-4" />} variant="secondary" onClick={handleExport}>
+        <Button
+          leftIcon={<Download className="size-4" />}
+          variant="secondary"
+          onClick={handleExport}
+        >
           Export
         </Button>
         <Button
@@ -137,7 +154,7 @@ export function ProspectsPage() {
 
       {/* Filters */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
-        <div className="flex-1 max-w-sm">
+        <div className="max-w-sm flex-1">
           <NoctisField
             type="search"
             placeholder="Search prospects..."
@@ -151,12 +168,17 @@ export function ProspectsPage() {
               setSearch('');
               setPage(1);
             }}
-            leadingElement={<Search className="size-4 text-foreground-subtle" />}
+            leadingElement={
+              <Search className="text-foreground-subtle size-4" />
+            }
           />
         </div>
         <div className="flex gap-2">
           <div className="space-y-1">
-            <Label htmlFor="status-filter" className="text-[10px] uppercase tracking-wider">
+            <Label
+              htmlFor="status-filter"
+              className="text-[10px] tracking-wider uppercase"
+            >
               Status
             </Label>
             <Select
@@ -176,7 +198,10 @@ export function ProspectsPage() {
             </Select>
           </div>
           <div className="space-y-1">
-            <Label htmlFor="source-filter" className="text-[10px] uppercase tracking-wider">
+            <Label
+              htmlFor="source-filter"
+              className="text-[10px] tracking-wider uppercase"
+            >
               Source
             </Label>
             <Select

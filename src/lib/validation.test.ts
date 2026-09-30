@@ -13,9 +13,22 @@ import {
 
 describe('auth validation', () => {
   it('validates sign in correctly', () => {
-    expect(signInSchema.safeParse({ email: 'user@example.com', password: 'password123' }).success).toBe(true);
-    expect(signInSchema.safeParse({ email: 'invalid-email', password: 'password123' }).success).toBe(false);
-    expect(signInSchema.safeParse({ email: 'user@example.com', password: '' }).success).toBe(false);
+    expect(
+      signInSchema.safeParse({
+        email: 'user@example.com',
+        password: 'password123',
+      }).success,
+    ).toBe(true);
+    expect(
+      signInSchema.safeParse({
+        email: 'invalid-email',
+        password: 'password123',
+      }).success,
+    ).toBe(false);
+    expect(
+      signInSchema.safeParse({ email: 'user@example.com', password: '' })
+        .success,
+    ).toBe(false);
   });
 
   it('rejects password mismatch on signup', () => {
@@ -34,13 +47,27 @@ describe('auth validation', () => {
 
 describe('organization & member validation', () => {
   it('validates organization creation', () => {
-    expect(organizationCreateSchema.safeParse({ name: 'Acme Corp' }).success).toBe(true);
-    expect(organizationCreateSchema.safeParse({ name: 'A' }).success).toBe(false);
+    expect(
+      organizationCreateSchema.safeParse({ name: 'Acme Corp' }).success,
+    ).toBe(true);
+    expect(organizationCreateSchema.safeParse({ name: 'A' }).success).toBe(
+      false,
+    );
   });
 
   it('validates member invitations and roles', () => {
-    expect(memberInviteSchema.safeParse({ email: 'bob@example.com', role_key: 'manager' }).success).toBe(true);
-    expect(memberInviteSchema.safeParse({ email: 'bob@example.com', role_key: 'superadmin' }).success).toBe(false);
+    expect(
+      memberInviteSchema.safeParse({
+        email: 'bob@example.com',
+        role_key: 'manager',
+      }).success,
+    ).toBe(true);
+    expect(
+      memberInviteSchema.safeParse({
+        email: 'bob@example.com',
+        role_key: 'superadmin',
+      }).success,
+    ).toBe(false);
   });
 });
 
@@ -92,7 +119,9 @@ describe('CRM domain validation', () => {
   });
 
   it('validates note schemas', () => {
-    expect(noteSchema.safeParse({ body: 'Meeting went great.' }).success).toBe(true);
+    expect(noteSchema.safeParse({ body: 'Meeting went great.' }).success).toBe(
+      true,
+    );
     expect(noteSchema.safeParse({ body: '   ' }).success).toBe(false);
   });
 });

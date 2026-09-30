@@ -6,7 +6,13 @@ import * as TabsPrimitive from '@radix-ui/react-tabs';
 import * as TooltipPrimitive from '@radix-ui/react-tooltip';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { Check } from 'lucide-react';
-import type { ComponentPropsWithoutRef, ElementRef, HTMLAttributes, SelectHTMLAttributes, TextareaHTMLAttributes } from 'react';
+import type {
+  ComponentPropsWithoutRef,
+  ElementRef,
+  HTMLAttributes,
+  SelectHTMLAttributes,
+  TextareaHTMLAttributes,
+} from 'react';
 import { forwardRef } from 'react';
 
 import { cn } from '@/lib/utils';
@@ -34,11 +40,12 @@ const badgeVariants = cva(
 );
 
 export interface BadgeProps
-  extends HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof badgeVariants> {}
+  extends HTMLAttributes<HTMLDivElement>, VariantProps<typeof badgeVariants> {}
 
 export function Badge({ className, variant, ...props }: BadgeProps) {
-  return <div className={cn(badgeVariants({ variant }), className)} {...props} />;
+  return (
+    <div className={cn(badgeVariants({ variant }), className)} {...props} />
+  );
 }
 
 /* ---------------------------------------------------------------------------
@@ -51,7 +58,7 @@ export const Label = forwardRef<
   <LabelPrimitive.Root
     ref={ref}
     className={cn(
-      'text-foreground text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 select-none',
+      'text-foreground text-xs leading-none font-medium select-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70',
       className,
     )}
     {...props}
@@ -66,7 +73,9 @@ export function Separator({
   className,
   orientation = 'horizontal',
   ...props
-}: HTMLAttributes<HTMLDivElement> & { orientation?: 'horizontal' | 'vertical' }) {
+}: HTMLAttributes<HTMLDivElement> & {
+  orientation?: 'horizontal' | 'vertical';
+}) {
   return (
     <div
       role="separator"
@@ -90,7 +99,7 @@ export const Switch = forwardRef<
 >(({ className, ...props }, ref) => (
   <SwitchPrimitive.Root
     className={cn(
-      'peer focus-visible:outline-primary inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=unchecked]:bg-surface-muted',
+      'peer focus-visible:outline-primary data-[state=checked]:bg-primary data-[state=unchecked]:bg-surface-muted inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-2 disabled:cursor-not-allowed disabled:opacity-50',
       className,
     )}
     {...props}
@@ -154,7 +163,7 @@ export const TabsTrigger = forwardRef<
   <TabsPrimitive.Trigger
     ref={ref}
     className={cn(
-      'focus-visible:outline-primary data-[state=active]:bg-surface data-[state=active]:text-foreground inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-xs font-medium transition-all focus-visible:outline-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow-xs cursor-pointer',
+      'focus-visible:outline-primary data-[state=active]:bg-surface data-[state=active]:text-foreground inline-flex cursor-pointer items-center justify-center rounded-md px-3 py-1 text-xs font-medium whitespace-nowrap transition-all focus-visible:outline-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow-xs',
       className,
     )}
     {...props}
@@ -168,7 +177,10 @@ export const TabsContent = forwardRef<
 >(({ className, ...props }, ref) => (
   <TabsPrimitive.Content
     ref={ref}
-    className={cn('focus-visible:outline-primary mt-2 focus-visible:outline-2', className)}
+    className={cn(
+      'focus-visible:outline-primary mt-2 focus-visible:outline-2',
+      className,
+    )}
     {...props}
   />
 ));
@@ -183,7 +195,10 @@ export const Avatar = forwardRef<
 >(({ className, ...props }, ref) => (
   <AvatarPrimitive.Root
     ref={ref}
-    className={cn('relative flex size-9 shrink-0 overflow-hidden rounded-full border border-line', className)}
+    className={cn(
+      'border-line relative flex size-9 shrink-0 overflow-hidden rounded-full border',
+      className,
+    )}
     {...props}
   />
 ));
@@ -250,7 +265,7 @@ export const Textarea = forwardRef<
     <textarea
       className={cn(
         'border-line bg-surface text-foreground placeholder:text-foreground-subtle flex min-h-[80px] w-full rounded-md border px-3 py-2 text-sm shadow-xs transition-colors',
-        'focus-visible:outline-2 focus-visible:outline-primary focus-visible:border-primary disabled:cursor-not-allowed disabled:opacity-50',
+        'focus-visible:outline-primary focus-visible:border-primary focus-visible:outline-2 disabled:cursor-not-allowed disabled:opacity-50',
         className,
       )}
       ref={ref}
@@ -273,14 +288,14 @@ export const Select = forwardRef<
         ref={ref}
         className={cn(
           'border-line bg-surface text-foreground placeholder:text-foreground-subtle flex h-9 w-full appearance-none rounded-md border px-3 py-1.5 pr-8 text-sm shadow-xs transition-colors',
-          'focus-visible:outline-2 focus-visible:outline-primary focus-visible:border-primary disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer',
+          'focus-visible:outline-primary focus-visible:border-primary cursor-pointer focus-visible:outline-2 disabled:cursor-not-allowed disabled:opacity-50',
           className,
         )}
         {...props}
       >
         {children}
       </select>
-      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-foreground-subtle">
+      <div className="text-foreground-subtle pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5">
         <svg className="size-4 fill-current" viewBox="0 0 20 20">
           <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
         </svg>

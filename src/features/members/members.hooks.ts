@@ -1,6 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/providers/AuthProvider';
-import { inviteMember, listMembers, removeMember, updateMembership } from './members.service';
+import {
+  inviteMember,
+  listMembers,
+  removeMember,
+  updateMembership,
+} from './members.service';
 import type { RoleKey } from '@/config/product';
 
 export const memberKeys = {
@@ -27,7 +32,8 @@ export function useMemberMutations() {
 
   const invite = useMutation({
     mutationFn: ({ email, role }: { email: string; role: RoleKey }) => {
-      if (!activeOrganizationId) throw new Error('No active workspace selected.');
+      if (!activeOrganizationId)
+        throw new Error('No active workspace selected.');
       return inviteMember(activeOrganizationId, email, role);
     },
     onSuccess: invalidate,

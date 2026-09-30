@@ -22,12 +22,21 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Avatar, AvatarFallback, Badge, Label, Select } from '@/components/ui/primitives';
+import {
+  Avatar,
+  AvatarFallback,
+  Badge,
+  Label,
+  Select,
+} from '@/components/ui/primitives';
 import { Input } from '@/components/ui/input';
 import { RoleBadge } from '@/components/status-badge';
 import { useAuth } from '@/providers/AuthProvider';
 import { useToast } from '@/providers/ToastProvider';
-import { useMembers, useMemberMutations } from '@/features/members/members.hooks';
+import {
+  useMembers,
+  useMemberMutations,
+} from '@/features/members/members.hooks';
 import { ROLE_KEYS, ROLE_LABELS, type RoleKey } from '@/config/product';
 import { formatDate } from '@/lib/format';
 import { toErrorMessage } from '@/lib/errors';
@@ -56,7 +65,10 @@ export function MembersPage() {
   const onInvite = handleSubmit(async (values) => {
     try {
       await invite.mutateAsync({ email: values.email, role: values.role_key });
-      success('Invitation recorded', `${values.email} joins this workspace on sign up.`);
+      success(
+        'Invitation recorded',
+        `${values.email} joins this workspace on sign up.`,
+      );
       reset();
       setInviteOpen(false);
     } catch (caught) {
@@ -70,7 +82,10 @@ export function MembersPage() {
         membershipId: member.id,
         changes: { role_key: newRole, user_id: member.user_id },
       });
-      success('Role updated', `Member role changed to ${ROLE_LABELS[newRole]}.`);
+      success(
+        'Role updated',
+        `Member role changed to ${ROLE_LABELS[newRole]}.`,
+      );
     } catch (caught) {
       toastError('Could not change role', toErrorMessage(caught));
     }
@@ -102,42 +117,52 @@ export function MembersPage() {
   const rows = members ?? [];
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="animate-fade-in space-y-6">
       <PageHeader
         title="Members"
         description="Everyone with a membership in this workspace, including invitations."
       >
         {can('members.invite') && (
-          <Button leftIcon={<UserPlus className="size-4" />} onClick={() => setInviteOpen(true)}>
+          <Button
+            leftIcon={<UserPlus className="size-4" />}
+            onClick={() => setInviteOpen(true)}
+          >
             Invite member
           </Button>
         )}
       </PageHeader>
 
       {error ? (
-        <p role="alert" className="bg-danger-soft text-danger rounded-md px-3 py-2 text-sm">
+        <p
+          role="alert"
+          className="bg-danger-soft text-danger rounded-md px-3 py-2 text-sm"
+        >
           {toErrorMessage(error, 'The member list could not be loaded.')}
         </p>
       ) : null}
 
       <Card className="overflow-hidden">
         {isLoading ? (
-          <div className="p-6 text-center text-sm text-foreground-muted">Loading members...</div>
+          <div className="text-foreground-muted p-6 text-center text-sm">
+            Loading members...
+          </div>
         ) : rows.length === 0 ? (
-          <div className="p-8 text-center text-sm text-foreground-muted">No members found.</div>
+          <div className="text-foreground-muted p-8 text-center text-sm">
+            No members found.
+          </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm border-collapse">
+            <table className="w-full border-collapse text-left text-sm">
               <thead>
-                <tr className="border-b border-line bg-surface-subtle text-xs font-semibold uppercase text-foreground-muted">
-                  <th className="py-3 px-4">Member</th>
-                  <th className="py-3 px-4">Role</th>
-                  <th className="py-3 px-4">Status</th>
-                  <th className="py-3 px-4">Joined / Invited</th>
-                  <th className="py-3 px-4 text-right">Actions</th>
+                <tr className="border-line bg-surface-subtle text-foreground-muted border-b text-xs font-semibold uppercase">
+                  <th className="px-4 py-3">Member</th>
+                  <th className="px-4 py-3">Role</th>
+                  <th className="px-4 py-3">Status</th>
+                  <th className="px-4 py-3">Joined / Invited</th>
+                  <th className="px-4 py-3 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-line">
+              <tbody className="divide-line divide-y">
                 {rows.map((member) => {
                   const initials =
                     member.full_name
@@ -145,33 +170,44 @@ export function MembersPage() {
                       .map((w: string) => w[0])
                       .join('')
                       .toUpperCase()
-                      .slice(0, 2) ?? member.email[0]?.toUpperCase() ?? '?';
+                      .slice(0, 2) ??
+                    member.email[0]?.toUpperCase() ??
+                    '?';
 
                   const isCurrentUser = member.user_id === user?.id;
                   const canManage = can('members.manage') && !isCurrentUser;
 
                   return (
-                    <tr key={member.id} className="hover:bg-surface-subtle/50 transition-colors">
-                      <td className="py-3 px-4">
+                    <tr
+                      key={member.id}
+                      className="hover:bg-surface-subtle/50 transition-colors"
+                    >
+                      <td className="px-4 py-3">
                         <div className="flex items-center gap-3">
                           <Avatar className="size-8">
-                            <AvatarFallback className="text-xs">{initials}</AvatarFallback>
+                            <AvatarFallback className="text-xs">
+                              {initials}
+                            </AvatarFallback>
                           </Avatar>
                           <div className="min-w-0">
-                            <p className="font-medium text-foreground truncate">
+                            <p className="text-foreground truncate font-medium">
                               {member.full_name || 'No name set'}
                               {isCurrentUser && (
-                                <span className="text-xs text-primary font-normal ml-1.5">(You)</span>
+                                <span className="text-primary ml-1.5 text-xs font-normal">
+                                  (You)
+                                </span>
                               )}
                             </p>
-                            <p className="text-xs text-foreground-muted truncate">{member.email}</p>
+                            <p className="text-foreground-muted truncate text-xs">
+                              {member.email}
+                            </p>
                           </div>
                         </div>
                       </td>
-                      <td className="py-3 px-4">
+                      <td className="px-4 py-3">
                         <RoleBadge roleKey={member.role_key as RoleKey} />
                       </td>
-                      <td className="py-3 px-4">
+                      <td className="px-4 py-3">
                         <Badge
                           variant={
                             member.status === 'active'
@@ -184,14 +220,18 @@ export function MembersPage() {
                           {member.status}
                         </Badge>
                       </td>
-                      <td className="py-3 px-4 text-xs text-foreground-muted">
+                      <td className="text-foreground-muted px-4 py-3 text-xs">
                         {formatDate(member.created_at)}
                       </td>
-                      <td className="py-3 px-4 text-right">
+                      <td className="px-4 py-3 text-right">
                         {canManage ? (
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                              <Button variant="ghost" size="icon" aria-label="Member options">
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                aria-label="Member options"
+                              >
                                 <MoreHorizontal className="size-4" />
                               </Button>
                             </DropdownMenuTrigger>
@@ -210,13 +250,15 @@ export function MembersPage() {
                                 className="text-danger"
                                 onSelect={() => setPendingRemoval(member)}
                               >
-                                <Trash2 className="size-4 mr-2" />
+                                <Trash2 className="mr-2 size-4" />
                                 Remove member
                               </DropdownMenuItem>
                             </DropdownMenuContent>
                           </DropdownMenu>
                         ) : (
-                          <span className="text-xs text-foreground-muted">—</span>
+                          <span className="text-foreground-muted text-xs">
+                            —
+                          </span>
                         )}
                       </td>
                     </tr>
@@ -235,7 +277,8 @@ export function MembersPage() {
             <DialogHeader>
               <DialogTitle>Invite a team member</DialogTitle>
               <DialogDescription>
-                They will receive an invitation to join this workspace when they sign up.
+                They will receive an invitation to join this workspace when they
+                sign up.
               </DialogDescription>
             </DialogHeader>
 
@@ -249,7 +292,7 @@ export function MembersPage() {
                   {...register('email')}
                 />
                 {errors.email && (
-                  <p className="text-xs text-danger">{errors.email.message}</p>
+                  <p className="text-danger text-xs">{errors.email.message}</p>
                 )}
               </div>
 
@@ -263,7 +306,9 @@ export function MembersPage() {
                   ))}
                 </Select>
                 {errors.role_key && (
-                  <p className="text-xs text-danger">{errors.role_key.message}</p>
+                  <p className="text-danger text-xs">
+                    {errors.role_key.message}
+                  </p>
                 )}
               </div>
             </div>

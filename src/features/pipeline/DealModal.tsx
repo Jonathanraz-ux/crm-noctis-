@@ -124,7 +124,9 @@ export function DealModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-xl">
         <DialogHeader>
-          <DialogTitle>{isEditing ? 'Edit Opportunity' : 'New Pipeline Deal'}</DialogTitle>
+          <DialogTitle>
+            {isEditing ? 'Edit Opportunity' : 'New Pipeline Deal'}
+          </DialogTitle>
           <DialogDescription>
             {isEditing
               ? 'Update deal value, stage, and target close date.'
@@ -149,7 +151,7 @@ export function DealModal({
             )}
           />
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Controller
               name="value"
               control={control}
@@ -159,7 +161,9 @@ export function DealModal({
                   label="Deal Value ($)"
                   placeholder="0.00"
                   value={field.value}
-                  onChange={(val) => field.onChange(val === '' ? 0 : Number(val))}
+                  onChange={(val) =>
+                    field.onChange(val === '' ? 0 : Number(val))
+                  }
                   onBlur={field.onBlur}
                   errorMessage={errors.value?.message}
                 />
@@ -188,9 +192,11 @@ export function DealModal({
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="space-y-1.5">
-              <Label htmlFor="deal-prospect-select">Linked Prospect / Account</Label>
+              <Label htmlFor="deal-prospect-select">
+                Linked Prospect / Account
+              </Label>
               <Controller
                 name="prospect_id"
                 control={control}
@@ -212,7 +218,9 @@ export function DealModal({
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="deal-contact-select">Key Stakeholder Contact</Label>
+              <Label htmlFor="deal-contact-select">
+                Key Stakeholder Contact
+              </Label>
               <Controller
                 name="contact_id"
                 control={control}

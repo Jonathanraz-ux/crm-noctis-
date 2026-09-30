@@ -14,7 +14,9 @@ export const CONTACT_SORT_COLUMNS = [
 
 export type ContactSortColumn = (typeof CONTACT_SORT_COLUMNS)[number];
 
-export function safeSortColumn(column: string | undefined | null): ContactSortColumn {
+export function safeSortColumn(
+  column: string | undefined | null,
+): ContactSortColumn {
   if (!column) return 'created_at';
   const clean = column.trim().toLowerCase();
   if (CONTACT_SORT_COLUMNS.includes(clean as ContactSortColumn)) {
@@ -57,16 +59,22 @@ export async function listContacts({
 
   if (search && search.trim()) {
     const term = search.trim();
-    query = query.or(`name.ilike.%${term}%,company.ilike.%${term}%,email.ilike.%${term}%,job_title.ilike.%${term}%`);
+    query = query.or(
+      `name.ilike.%${term}%,company.ilike.%${term}%,email.ilike.%${term}%,job_title.ilike.%${term}%`,
+    );
   }
 
-  query = query.order(safeSort, { ascending: sortOrder === 'asc' }).range(from, to);
+  query = query
+    .order(safeSort, { ascending: sortOrder === 'asc' })
+    .range(from, to);
 
   const { data, count, error } = await query;
   if (error) throw error;
 
   return {
-    contacts: ((data ?? []) as unknown) as (Contact & { prospects?: { name: string; company: string | null } | null })[],
+    contacts: (data ?? []) as unknown as (Contact & {
+      prospects?: { name: string; company: string | null } | null;
+    })[],
     totalCount: count ?? 0,
   };
 }
@@ -83,7 +91,10 @@ export async function getContactById(organizationId: string, id: string) {
   return data;
 }
 
-export async function createContact(organizationId: string, input: ContactInput) {
+export async function createContact(
+  organizationId: string,
+  input: ContactInput,
+) {
   const { data, error } = await supabase
     .from('contacts')
     .insert({

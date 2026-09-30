@@ -16,7 +16,9 @@ export function QueryProvider({ children }: { children: ReactNode }) {
                 typeof error === 'object' &&
                 error !== null &&
                 'message' in error &&
-                /401|403|row-level security|permission denied/i.test(String(error.message))
+                /401|403|row-level security|permission denied/i.test(
+                  String(error.message),
+                )
               ) {
                 return false;
               }
@@ -27,5 +29,7 @@ export function QueryProvider({ children }: { children: ReactNode }) {
       }),
   );
 
-  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+  return (
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  );
 }

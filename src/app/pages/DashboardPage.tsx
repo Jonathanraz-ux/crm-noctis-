@@ -25,9 +25,21 @@ export function DashboardPage() {
   const { activeOrganizationId } = useAuth();
   const orgId = activeOrganizationId ?? '';
 
-  const { data: prospectsData } = useProspects({ organizationId: orgId, page: 1, pageSize: 1 });
-  const { data: contactsData } = useContacts({ organizationId: orgId, page: 1, pageSize: 1 });
-  const { data: dealsData } = useDeals({ organizationId: orgId, page: 1, pageSize: 200 });
+  const { data: prospectsData } = useProspects({
+    organizationId: orgId,
+    page: 1,
+    pageSize: 1,
+  });
+  const { data: contactsData } = useContacts({
+    organizationId: orgId,
+    page: 1,
+    pageSize: 1,
+  });
+  const { data: dealsData } = useDeals({
+    organizationId: orgId,
+    page: 1,
+    pageSize: 200,
+  });
 
   const totalProspects = prospectsData?.totalCount ?? 0;
   const totalContacts = contactsData?.totalCount ?? 0;
@@ -47,28 +59,31 @@ export function DashboardPage() {
   }
 
   return (
-    <div className="space-y-6 animate-fade-in">
-      <PageHeader title="Dashboard" description="Overview of your CRM workspace." />
+    <div className="animate-fade-in space-y-6">
+      <PageHeader
+        title="Dashboard"
+        description="Overview of your CRM workspace."
+      />
 
       {/* Stats row */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
-          icon={<UserSearch className="size-5 text-primary" />}
+          icon={<UserSearch className="text-primary size-5" />}
           title="Prospects"
           value={totalProspects}
         />
         <StatCard
-          icon={<Contact2 className="size-5 text-info" />}
+          icon={<Contact2 className="text-info size-5" />}
           title="Contacts"
           value={totalContacts}
         />
         <StatCard
-          icon={<Kanban className="size-5 text-warning" />}
+          icon={<Kanban className="text-warning size-5" />}
           title="Active deals"
           value={totalDeals}
         />
         <StatCard
-          icon={<DollarSign className="size-5 text-success" />}
+          icon={<DollarSign className="text-success size-5" />}
           title="Pipeline value"
           value={formatCurrency(totalPipelineValue)}
         />
@@ -76,18 +91,20 @@ export function DashboardPage() {
 
       {/* Pipeline summary */}
       <Card className="p-5">
-        <div className="flex items-center gap-2 mb-4">
-          <TrendingUp className="size-4 text-foreground-muted" />
+        <div className="mb-4 flex items-center gap-2">
+          <TrendingUp className="text-foreground-muted size-4" />
           <h2 className="text-sm font-semibold">Pipeline Summary</h2>
         </div>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
           {DEAL_STAGES.map((stage) => (
             <div
               key={stage}
-              className="bg-surface-subtle rounded-lg p-3 text-center border border-line"
+              className="bg-surface-subtle border-line rounded-lg border p-3 text-center"
             >
-              <p className="text-2xl font-bold tabular">{stageMap.get(stage) ?? 0}</p>
-              <p className="text-xs text-foreground-muted mt-1">
+              <p className="tabular text-2xl font-bold">
+                {stageMap.get(stage) ?? 0}
+              </p>
+              <p className="text-foreground-muted mt-1 text-xs">
                 {DEAL_STAGE_LABELS[stage]}
               </p>
             </div>
@@ -96,16 +113,18 @@ export function DashboardPage() {
       </Card>
 
       {/* Won deals highlight */}
-      <Card className="p-5 bg-success-soft/30 border-success/20">
+      <Card className="bg-success-soft/30 border-success/20 p-5">
         <div className="flex items-center gap-3">
           <div className="bg-success text-on-primary grid size-10 place-items-center rounded-lg">
             <DollarSign className="size-5" />
           </div>
           <div>
             <p className="text-sm font-semibold">Closed Won</p>
-            <p className="text-2xl font-bold tabular">{formatCurrency(wonValue)}</p>
+            <p className="tabular text-2xl font-bold">
+              {formatCurrency(wonValue)}
+            </p>
           </div>
-          <div className="ml-auto flex items-center gap-1 text-xs text-foreground-muted">
+          <div className="text-foreground-muted ml-auto flex items-center gap-1 text-xs">
             <ListChecks className="size-3.5" />
             {deals.filter((d) => d.stage === 'won').length} deal(s)
           </div>

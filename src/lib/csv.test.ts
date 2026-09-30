@@ -48,7 +48,9 @@ describe('toCsv', () => {
       ['Bob, Jr.', 'Beta "Corp"', 12000],
     ];
     const csv = toCsv(headers, rows);
-    expect(csv).toBe('Name,Company,Value\r\nAlice,Acme,50000\r\n"Bob, Jr.","Beta ""Corp""",12000');
+    expect(csv).toBe(
+      'Name,Company,Value\r\nAlice,Acme,50000\r\n"Bob, Jr.","Beta ""Corp""",12000',
+    );
   });
 
   it('adds UTF-8 BOM when requested', () => {
@@ -59,7 +61,9 @@ describe('toCsv', () => {
 
 describe('safeFilename', () => {
   it('strips special characters and normalizes spaces', () => {
-    expect(safeFilename('Prospects Export (2026/09/29)!')).toBe('prospects-export-20260929');
+    expect(safeFilename('Prospects Export (2026/09/29)!')).toBe(
+      'prospects-export-20260929',
+    );
     expect(safeFilename('  deals___Q3 report  ')).toBe('deals___q3-report');
   });
 });

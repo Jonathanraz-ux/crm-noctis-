@@ -13,7 +13,12 @@ export interface ToastItem {
 }
 
 interface ToastContextType {
-  toast: (options: { type?: ToastType; title: string; message?: string; duration?: number }) => void;
+  toast: (options: {
+    type?: ToastType;
+    title: string;
+    message?: string;
+    duration?: number;
+  }) => void;
   success: (title: string, message?: string) => void;
   error: (title: string, message?: string) => void;
   info: (title: string, message?: string) => void;
@@ -50,48 +55,53 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   );
 
   const success = useCallback(
-    (title: string, message?: string) => toast({ type: 'success', title, message }),
+    (title: string, message?: string) =>
+      toast({ type: 'success', title, message }),
     [toast],
   );
   const error = useCallback(
-    (title: string, message?: string) => toast({ type: 'error', title, message }),
+    (title: string, message?: string) =>
+      toast({ type: 'error', title, message }),
     [toast],
   );
   const info = useCallback(
-    (title: string, message?: string) => toast({ type: 'info', title, message }),
+    (title: string, message?: string) =>
+      toast({ type: 'info', title, message }),
     [toast],
   );
 
   return (
     <ToastContext.Provider value={{ toast, success, error, info }}>
       {children}
-      <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none p-4">
+      <div className="pointer-events-none fixed right-4 bottom-4 z-50 flex w-full max-w-sm flex-col gap-2 p-4">
         {toasts.map((t) => (
           <div
             key={t.id}
             role="status"
             className={cn(
-              'pointer-events-auto flex items-start gap-3 rounded-lg border p-3.5 shadow-lg animate-slide-up bg-surface border-line text-foreground text-xs',
+              'animate-slide-up bg-surface border-line text-foreground pointer-events-auto flex items-start gap-3 rounded-lg border p-3.5 text-xs shadow-lg',
               t.type === 'success' && 'border-success/30 bg-success-soft/20',
               t.type === 'error' && 'border-danger/30 bg-danger-soft/20',
               t.type === 'info' && 'border-info/30 bg-info-soft/20',
             )}
           >
             {t.type === 'success' ? (
-              <CircleCheck className="size-4 shrink-0 text-success mt-0.5" />
+              <CircleCheck className="text-success mt-0.5 size-4 shrink-0" />
             ) : t.type === 'error' ? (
-              <CircleAlert className="size-4 shrink-0 text-danger mt-0.5" />
+              <CircleAlert className="text-danger mt-0.5 size-4 shrink-0" />
             ) : (
-              <Info className="size-4 shrink-0 text-info mt-0.5" />
+              <Info className="text-info mt-0.5 size-4 shrink-0" />
             )}
             <div className="flex-1">
-              <p className="font-semibold text-foreground">{t.title}</p>
-              {t.message ? <p className="mt-0.5 text-foreground-muted">{t.message}</p> : null}
+              <p className="text-foreground font-semibold">{t.title}</p>
+              {t.message ? (
+                <p className="text-foreground-muted mt-0.5">{t.message}</p>
+              ) : null}
             </div>
             <button
               type="button"
               onClick={() => removeToast(t.id)}
-              className="text-foreground-subtle hover:text-foreground shrink-0 p-0.5 rounded cursor-pointer"
+              className="text-foreground-subtle hover:text-foreground shrink-0 cursor-pointer rounded p-0.5"
             >
               <X size={14} />
             </button>

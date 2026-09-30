@@ -2,7 +2,13 @@
  * Hand-written TypeScript description of the Noctis CRM Supabase schema.
  */
 
-export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[];
 
 export type Database = {
   public: {
@@ -59,8 +65,18 @@ export type Database = {
       };
 
       permissions: {
-        Row: { code: string; label: string; category: string; description: string | null };
-        Insert: { code: string; label: string; category: string; description?: string | null };
+        Row: {
+          code: string;
+          label: string;
+          category: string;
+          description: string | null;
+        };
+        Insert: {
+          code: string;
+          label: string;
+          category: string;
+          description?: string | null;
+        };
         Update: never;
         Relationships: [];
       };
@@ -132,8 +148,16 @@ export type Database = {
           company: string | null;
           email: string | null;
           phone: string | null;
-          source: 'website' | 'referral' | 'outreach' | 'event' | 'inbound' | 'partner' | 'other';
-          status: 'new' | 'contacted' | 'qualified' | 'unqualified' | 'converted';
+          source:
+            | 'website'
+            | 'referral'
+            | 'outreach'
+            | 'event'
+            | 'inbound'
+            | 'partner'
+            | 'other';
+          status:
+            'new' | 'contacted' | 'qualified' | 'unqualified' | 'converted';
           tags: string[];
           notes: string | null;
           owner_id: string | null;
@@ -148,8 +172,16 @@ export type Database = {
           company?: string | null;
           email?: string | null;
           phone?: string | null;
-          source?: 'website' | 'referral' | 'outreach' | 'event' | 'inbound' | 'partner' | 'other';
-          status?: 'new' | 'contacted' | 'qualified' | 'unqualified' | 'converted';
+          source?:
+            | 'website'
+            | 'referral'
+            | 'outreach'
+            | 'event'
+            | 'inbound'
+            | 'partner'
+            | 'other';
+          status?:
+            'new' | 'contacted' | 'qualified' | 'unqualified' | 'converted';
           tags?: string[];
           notes?: string | null;
           owner_id?: string | null;
@@ -162,8 +194,16 @@ export type Database = {
           company?: string | null;
           email?: string | null;
           phone?: string | null;
-          source?: 'website' | 'referral' | 'outreach' | 'event' | 'inbound' | 'partner' | 'other';
-          status?: 'new' | 'contacted' | 'qualified' | 'unqualified' | 'converted';
+          source?:
+            | 'website'
+            | 'referral'
+            | 'outreach'
+            | 'event'
+            | 'inbound'
+            | 'partner'
+            | 'other';
+          status?:
+            'new' | 'contacted' | 'qualified' | 'unqualified' | 'converted';
           tags?: string[];
           notes?: string | null;
           owner_id?: string | null;
@@ -221,7 +261,8 @@ export type Database = {
           organization_id: string;
           title: string;
           value: number;
-          stage: 'lead' | 'discovery' | 'proposal' | 'negotiation' | 'won' | 'lost';
+          stage:
+            'lead' | 'discovery' | 'proposal' | 'negotiation' | 'won' | 'lost';
           expected_close_date: string | null;
           prospect_id: string | null;
           contact_id: string | null;
@@ -237,7 +278,8 @@ export type Database = {
           organization_id: string;
           title: string;
           value?: number;
-          stage?: 'lead' | 'discovery' | 'proposal' | 'negotiation' | 'won' | 'lost';
+          stage?:
+            'lead' | 'discovery' | 'proposal' | 'negotiation' | 'won' | 'lost';
           expected_close_date?: string | null;
           prospect_id?: string | null;
           contact_id?: string | null;
@@ -251,7 +293,8 @@ export type Database = {
         Update: {
           title?: string;
           value?: number;
-          stage?: 'lead' | 'discovery' | 'proposal' | 'negotiation' | 'won' | 'lost';
+          stage?:
+            'lead' | 'discovery' | 'proposal' | 'negotiation' | 'won' | 'lost';
           expected_close_date?: string | null;
           prospect_id?: string | null;
           contact_id?: string | null;
@@ -308,18 +351,18 @@ export type Database = {
         };
         Relationships: [
           {
-            foreignKeyName: 'tasks_prospect_id_fkey',
-            columns: ['prospect_id'],
-            isOneToOne: false,
-            referencedRelation: 'prospects',
-            referencedColumns: ['id'],
+            foreignKeyName: 'tasks_prospect_id_fkey';
+            columns: ['prospect_id'];
+            isOneToOne: false;
+            referencedRelation: 'prospects';
+            referencedColumns: ['id'];
           },
           {
-            foreignKeyName: 'tasks_deal_id_fkey',
-            columns: ['deal_id'],
-            isOneToOne: false,
-            referencedRelation: 'deals',
-            referencedColumns: ['id'],
+            foreignKeyName: 'tasks_deal_id_fkey';
+            columns: ['deal_id'];
+            isOneToOne: false;
+            referencedRelation: 'deals';
+            referencedColumns: ['id'];
           },
         ];
       };
@@ -398,7 +441,8 @@ export type Database = {
       v_deals_by_stage: {
         Row: {
           organization_id: string;
-          stage: 'lead' | 'discovery' | 'proposal' | 'negotiation' | 'won' | 'lost';
+          stage:
+            'lead' | 'discovery' | 'proposal' | 'negotiation' | 'won' | 'lost';
           count: number;
           total_value: number;
         };
@@ -445,8 +489,10 @@ export type Database = {
 
     Enums: {
       membership_status: 'invited' | 'active' | 'suspended';
-      prospect_status: 'new' | 'contacted' | 'qualified' | 'unqualified' | 'converted';
-      deal_stage: 'lead' | 'discovery' | 'proposal' | 'negotiation' | 'won' | 'lost';
+      prospect_status:
+        'new' | 'contacted' | 'qualified' | 'unqualified' | 'converted';
+      deal_stage:
+        'lead' | 'discovery' | 'proposal' | 'negotiation' | 'won' | 'lost';
       task_status: 'pending' | 'in_progress' | 'completed' | 'cancelled';
       task_priority: 'low' | 'medium' | 'high' | 'urgent';
     };
@@ -468,6 +514,8 @@ export type Note = Database['public']['Tables']['notes']['Row'];
 export type AuditLog = Database['public']['Tables']['audit_logs']['Row'];
 
 export type OrgStats = Database['public']['Views']['v_org_stats']['Row'];
-export type DealsByStage = Database['public']['Views']['v_deals_by_stage']['Row'];
-export type DealsByMonth = Database['public']['Views']['v_deals_by_month']['Row'];
+export type DealsByStage =
+  Database['public']['Views']['v_deals_by_stage']['Row'];
+export type DealsByMonth =
+  Database['public']['Views']['v_deals_by_month']['Row'];
 export type MemberRow = Database['public']['Views']['v_members']['Row'];

@@ -58,11 +58,11 @@ export function DataTable<T extends { id: string } & Record<string, unknown>>({
   const toIndex = Math.min(page * pageSize, totalCount);
 
   return (
-    <Card className="overflow-hidden border-line">
-      <div className="overflow-x-auto scrollbar-slim">
-        <table className="w-full text-left text-xs border-collapse">
+    <Card className="border-line overflow-hidden">
+      <div className="scrollbar-slim overflow-x-auto">
+        <table className="w-full border-collapse text-left text-xs">
           <thead>
-            <tr className="border-b border-line bg-surface-subtle text-foreground-muted font-medium select-none">
+            <tr className="border-line bg-surface-subtle text-foreground-muted border-b font-medium select-none">
               {columns.map((col) => {
                 const isSorted = sortBy === col.key;
                 return (
@@ -70,10 +70,10 @@ export function DataTable<T extends { id: string } & Record<string, unknown>>({
                     key={col.key}
                     scope="col"
                     className={cn(
-                      'px-4 py-3 font-semibold uppercase tracking-wider text-[11px]',
+                      'px-4 py-3 text-[11px] font-semibold tracking-wider uppercase',
                       col.align === 'right' && 'text-right',
                       col.align === 'center' && 'text-center',
-                      col.sortable && 'cursor-pointer hover:text-foreground',
+                      col.sortable && 'hover:text-foreground cursor-pointer',
                       col.className,
                     )}
                     onClick={() => col.sortable && onSort?.(col.key)}
@@ -81,8 +81,8 @@ export function DataTable<T extends { id: string } & Record<string, unknown>>({
                     <div
                       className={cn(
                         'inline-flex items-center gap-1.5',
-                        col.align === 'right' && 'justify-end w-full',
-                        col.align === 'center' && 'justify-center w-full',
+                        col.align === 'right' && 'w-full justify-end',
+                        col.align === 'center' && 'w-full justify-center',
                       )}
                     >
                       <span>{col.header}</span>
@@ -95,7 +95,10 @@ export function DataTable<T extends { id: string } & Record<string, unknown>>({
                               <ChevronDown size={14} className="text-primary" />
                             )
                           ) : (
-                            <ChevronDown size={14} className="opacity-0 group-hover:opacity-100" />
+                            <ChevronDown
+                              size={14}
+                              className="opacity-0 group-hover:opacity-100"
+                            />
                           )}
                         </span>
                       ) : null}
@@ -105,25 +108,31 @@ export function DataTable<T extends { id: string } & Record<string, unknown>>({
               })}
             </tr>
           </thead>
-          <tbody className="divide-y divide-line bg-surface text-foreground">
+          <tbody className="divide-line bg-surface text-foreground divide-y">
             {loading ? (
-              Array.from({ length: pageSize > 5 ? 5 : pageSize }).map((_, i) => (
-                <tr key={i} className="animate-pulse">
-                  {columns.map((col) => (
-                    <td key={col.key} className="px-4 py-3.5">
-                      <div className="h-4 w-3/4 rounded-sm bg-surface-muted" />
-                    </td>
-                  ))}
-                </tr>
-              ))
+              Array.from({ length: pageSize > 5 ? 5 : pageSize }).map(
+                (_, i) => (
+                  <tr key={i} className="animate-pulse">
+                    {columns.map((col) => (
+                      <td key={col.key} className="px-4 py-3.5">
+                        <div className="bg-surface-muted h-4 w-3/4 rounded-sm" />
+                      </td>
+                    ))}
+                  </tr>
+                ),
+              )
             ) : data.length === 0 ? (
               <tr>
                 <td colSpan={columns.length} className="py-12 text-center">
-                  <p className="text-sm font-semibold text-foreground">{emptyTitle}</p>
-                  <p className="text-xs text-foreground-muted mt-1 max-w-sm mx-auto">
+                  <p className="text-foreground text-sm font-semibold">
+                    {emptyTitle}
+                  </p>
+                  <p className="text-foreground-muted mx-auto mt-1 max-w-sm text-xs">
                     {emptyDescription}
                   </p>
-                  {emptyAction ? <div className="mt-4">{emptyAction}</div> : null}
+                  {emptyAction ? (
+                    <div className="mt-4">{emptyAction}</div>
+                  ) : null}
                 </td>
               </tr>
             ) : (
@@ -132,7 +141,7 @@ export function DataTable<T extends { id: string } & Record<string, unknown>>({
                   key={row.id ?? idx}
                   onClick={() => onRowClick?.(row)}
                   className={cn(
-                    'transition-colors hover:bg-surface-subtle',
+                    'hover:bg-surface-subtle transition-colors',
                     onRowClick && 'cursor-pointer',
                   )}
                 >
@@ -146,7 +155,9 @@ export function DataTable<T extends { id: string } & Record<string, unknown>>({
                         col.className,
                       )}
                     >
-                      {col.render ? col.render(row) : (row[col.key] as ReactNode) ?? '—'}
+                      {col.render
+                        ? col.render(row)
+                        : ((row[col.key] as ReactNode) ?? '—')}
                     </td>
                   ))}
                 </tr>
@@ -157,11 +168,13 @@ export function DataTable<T extends { id: string } & Record<string, unknown>>({
       </div>
 
       {totalCount > 0 && onPageChange ? (
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-line px-4 py-3 bg-surface-subtle text-xs text-foreground-muted">
+        <div className="border-line bg-surface-subtle text-foreground-muted flex flex-col items-center justify-between gap-3 border-t px-4 py-3 text-xs sm:flex-row">
           <div>
-            Showing <span className="font-medium text-foreground">{fromIndex}</span> to{' '}
-            <span className="font-medium text-foreground">{toIndex}</span> of{' '}
-            <span className="font-medium text-foreground">{totalCount}</span> results
+            Showing{' '}
+            <span className="text-foreground font-medium">{fromIndex}</span> to{' '}
+            <span className="text-foreground font-medium">{toIndex}</span> of{' '}
+            <span className="text-foreground font-medium">{totalCount}</span>{' '}
+            results
           </div>
           <div className="flex items-center gap-1.5">
             <Button
@@ -182,7 +195,7 @@ export function DataTable<T extends { id: string } & Record<string, unknown>>({
             >
               <ChevronLeft size={14} />
             </Button>
-            <span className="px-2 text-xs font-medium tabular">
+            <span className="tabular px-2 text-xs font-medium">
               Page {page} of {totalPages}
             </span>
             <Button

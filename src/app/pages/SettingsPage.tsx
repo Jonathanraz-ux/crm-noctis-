@@ -6,22 +6,49 @@ import { Building2, LogOut, User as UserIcon } from 'lucide-react';
 
 import { PageHeader } from '@/components/page-header';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Label, Avatar, AvatarFallback, AvatarImage, Badge } from '@/components/ui/primitives';
+import {
+  Label,
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  Badge,
+} from '@/components/ui/primitives';
 import { useAuth } from '@/providers/AuthProvider';
 import { useToast } from '@/providers/ToastProvider';
 import { updateOrganization } from '@/features/organizations/organizations.service';
-import { ORG_ADMIN_ROLES, ROLE_KEYS, ROLE_LABELS, type RoleKey } from '@/config/product';
+import {
+  ORG_ADMIN_ROLES,
+  ROLE_KEYS,
+  ROLE_LABELS,
+  type RoleKey,
+} from '@/config/product';
 import { toErrorMessage } from '@/lib/errors';
 import { profileSchema, type ProfileValues } from '@/lib/validation';
 
 export function SettingsPage() {
-  const { profile, user, activeOrganization, roleKey, updateProfile, signOut, can } = useAuth();
+  const {
+    profile,
+    user,
+    activeOrganization,
+    roleKey,
+    updateProfile,
+    signOut,
+    can,
+  } = useAuth();
   const { success, error: toastError } = useToast();
   const [formError, setFormError] = useState<string | null>(null);
   const [orgName, setOrgName] = useState(activeOrganization?.name ?? '');
-  const [orgTimezone, setOrgTimezone] = useState(activeOrganization?.timezone ?? 'UTC');
+  const [orgTimezone, setOrgTimezone] = useState(
+    activeOrganization?.timezone ?? 'UTC',
+  );
   const [savingOrg, setSavingOrg] = useState(false);
 
   useEffect(() => {
@@ -69,7 +96,9 @@ export function SettingsPage() {
   });
 
   const canEditOrg =
-    can('org.manage') && roleKey !== null && ORG_ADMIN_ROLES.includes(roleKey as RoleKey);
+    can('org.manage') &&
+    roleKey !== null &&
+    ORG_ADMIN_ROLES.includes(roleKey as RoleKey);
 
   const initials =
     profile?.full_name
@@ -77,10 +106,12 @@ export function SettingsPage() {
       .map((w: string) => w[0])
       .join('')
       .toUpperCase()
-      .slice(0, 2) ?? user?.email?.[0]?.toUpperCase() ?? '?';
+      .slice(0, 2) ??
+    user?.email?.[0]?.toUpperCase() ??
+    '?';
 
   return (
-    <div className="mx-auto max-w-3xl space-y-6 animate-fade-in">
+    <div className="animate-fade-in mx-auto max-w-3xl space-y-6">
       <PageHeader
         title="Settings"
         description="Manage your account profile and current workspace settings."
@@ -93,26 +124,37 @@ export function SettingsPage() {
             <UserIcon className="size-4" aria-hidden />
             Personal Profile
           </CardTitle>
-          <CardDescription>Visible to your team members across this workspace.</CardDescription>
+          <CardDescription>
+            Visible to your team members across this workspace.
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={onSaveProfile} noValidate className="space-y-4">
             {formError && (
-              <p role="alert" className="bg-danger-soft text-danger rounded-md px-3 py-2 text-sm">
+              <p
+                role="alert"
+                className="bg-danger-soft text-danger rounded-md px-3 py-2 text-sm"
+              >
                 {formError}
               </p>
             )}
 
-            <div className="flex items-center gap-4 mb-4">
+            <div className="mb-4 flex items-center gap-4">
               <Avatar className="size-12">
-                {profile?.avatar_url && <AvatarImage src={profile.avatar_url} />}
-                <AvatarFallback className="text-sm font-semibold">{initials}</AvatarFallback>
+                {profile?.avatar_url && (
+                  <AvatarImage src={profile.avatar_url} />
+                )}
+                <AvatarFallback className="text-sm font-semibold">
+                  {initials}
+                </AvatarFallback>
               </Avatar>
               <div className="min-w-0">
-                <p className="font-medium text-foreground truncate">
+                <p className="text-foreground truncate font-medium">
                   {profile?.full_name ?? 'No name set'}
                 </p>
-                <p className="text-xs text-foreground-muted truncate">{user?.email}</p>
+                <p className="text-foreground-muted truncate text-xs">
+                  {user?.email}
+                </p>
               </div>
             </div>
 
@@ -125,7 +167,7 @@ export function SettingsPage() {
                 autoComplete="name"
               />
               {errors.fullName && (
-                <p className="text-xs text-danger">{errors.fullName.message}</p>
+                <p className="text-danger text-xs">{errors.fullName.message}</p>
               )}
             </div>
 
@@ -138,7 +180,9 @@ export function SettingsPage() {
                 placeholder="https://example.com/photo.jpg"
               />
               {errors.avatarUrl && (
-                <p className="text-xs text-danger">{errors.avatarUrl.message}</p>
+                <p className="text-danger text-xs">
+                  {errors.avatarUrl.message}
+                </p>
               )}
             </div>
 
@@ -210,7 +254,7 @@ export function SettingsPage() {
               </div>
             </form>
           ) : (
-            <p className="text-sm text-foreground-muted">
+            <p className="text-foreground-muted text-sm">
               Only an owner or administrator can modify workspace settings.
             </p>
           )}
@@ -226,10 +270,19 @@ export function SettingsPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ul className="divide-y divide-line">
+          <ul className="divide-line divide-y">
             {ROLE_KEYS.map((key) => (
-              <li key={key} className="flex items-center justify-between py-2.5 text-sm">
-                <span className={key === roleKey ? 'font-medium text-foreground' : 'text-foreground-muted'}>
+              <li
+                key={key}
+                className="flex items-center justify-between py-2.5 text-sm"
+              >
+                <span
+                  className={
+                    key === roleKey
+                      ? 'text-foreground font-medium'
+                      : 'text-foreground-muted'
+                  }
+                >
                   {ROLE_LABELS[key]}
                 </span>
                 {key === roleKey && <Badge variant="default">Your role</Badge>}
@@ -238,7 +291,10 @@ export function SettingsPage() {
           </ul>
           {can('members.read') && (
             <div className="mt-3">
-              <Link to="/roles" className="text-xs text-primary hover:underline font-medium">
+              <Link
+                to="/roles"
+                className="text-primary text-xs font-medium hover:underline"
+              >
                 View full permission matrix &rarr;
               </Link>
             </div>
@@ -250,10 +306,16 @@ export function SettingsPage() {
       <Card>
         <CardHeader>
           <CardTitle className="text-base">Session</CardTitle>
-          <CardDescription>Sign out of your account on this device.</CardDescription>
+          <CardDescription>
+            Sign out of your account on this device.
+          </CardDescription>
         </CardHeader>
         <CardContent>
-          <Button variant="secondary" leftIcon={<LogOut className="size-4" />} onClick={() => void signOut()}>
+          <Button
+            variant="secondary"
+            leftIcon={<LogOut className="size-4" />}
+            onClick={() => void signOut()}
+          >
             Sign out
           </Button>
         </CardContent>

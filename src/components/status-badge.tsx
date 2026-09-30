@@ -15,7 +15,10 @@ import {
 } from '@/config/product';
 
 export function ProspectStatusBadge({ status }: { status: ProspectStatus }) {
-  const variants: Record<ProspectStatus, 'default' | 'secondary' | 'success' | 'warning' | 'danger'> = {
+  const variants: Record<
+    ProspectStatus,
+    'default' | 'secondary' | 'success' | 'warning' | 'danger'
+  > = {
     new: 'default',
     contacted: 'secondary',
     qualified: 'success',
@@ -39,7 +42,10 @@ export function ProspectSourceBadge({ source }: { source: ProspectSource }) {
 }
 
 export function DealStageBadge({ stage }: { stage: DealStage }) {
-  const variants: Record<DealStage, 'default' | 'secondary' | 'success' | 'warning' | 'danger'> = {
+  const variants: Record<
+    DealStage,
+    'default' | 'secondary' | 'success' | 'warning' | 'danger'
+  > = {
     lead: 'secondary',
     discovery: 'default',
     proposal: 'warning',
@@ -56,7 +62,10 @@ export function DealStageBadge({ stage }: { stage: DealStage }) {
 }
 
 export function TaskStatusBadge({ status }: { status: TaskStatus }) {
-  const variants: Record<TaskStatus, 'default' | 'secondary' | 'success' | 'danger'> = {
+  const variants: Record<
+    TaskStatus,
+    'default' | 'secondary' | 'success' | 'danger'
+  > = {
     pending: 'secondary',
     in_progress: 'default',
     completed: 'success',
@@ -71,7 +80,10 @@ export function TaskStatusBadge({ status }: { status: TaskStatus }) {
 }
 
 export function TaskPriorityBadge({ priority }: { priority: TaskPriority }) {
-  const variants: Record<TaskPriority, 'default' | 'secondary' | 'warning' | 'danger'> = {
+  const variants: Record<
+    TaskPriority,
+    'default' | 'secondary' | 'warning' | 'danger'
+  > = {
     low: 'secondary',
     medium: 'default',
     high: 'warning',
@@ -86,7 +98,10 @@ export function TaskPriorityBadge({ priority }: { priority: TaskPriority }) {
 }
 
 export function RoleBadge({ roleKey }: { roleKey: RoleKey }) {
-  const variants: Record<RoleKey, 'default' | 'secondary' | 'success' | 'warning'> = {
+  const variants: Record<
+    RoleKey,
+    'default' | 'secondary' | 'success' | 'warning'
+  > = {
     owner: 'default',
     admin: 'warning',
     manager: 'success',

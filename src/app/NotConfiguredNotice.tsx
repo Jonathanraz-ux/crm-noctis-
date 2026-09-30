@@ -15,19 +15,33 @@ export function NotConfiguredNotice() {
       role="alert"
       className="border-warning/40 bg-warning-soft mb-6 flex flex-wrap items-start gap-3 rounded-lg border p-4"
     >
-      <AlertTriangle className="text-warning mt-0.5 size-5 shrink-0" aria-hidden />
+      <AlertTriangle
+        className="text-warning mt-0.5 size-5 shrink-0"
+        aria-hidden
+      />
       <div className="min-w-0 flex-1 space-y-2 text-sm">
-        <p className="text-foreground font-medium">Supabase is not configured yet</p>
+        <p className="text-foreground font-medium">
+          Supabase is not configured yet
+        </p>
         <p className="text-foreground-muted">
-          Copy <code className="bg-surface rounded px-1 py-0.5 text-xs">.env.example</code> to{' '}
-          <code className="bg-surface rounded px-1 py-0.5 text-xs">.env.local</code> and fill in
-          your project URL and anon key. Then apply the migrations in{' '}
-          <code className="bg-surface rounded px-1 py-0.5 text-xs">supabase/migrations</code> and
-          restart the dev server.
+          Copy{' '}
+          <code className="bg-surface rounded px-1 py-0.5 text-xs">
+            .env.example
+          </code>{' '}
+          to{' '}
+          <code className="bg-surface rounded px-1 py-0.5 text-xs">
+            .env.local
+          </code>{' '}
+          and fill in your project URL and anon key. Then apply the migrations
+          in{' '}
+          <code className="bg-surface rounded px-1 py-0.5 text-xs">
+            supabase/migrations
+          </code>{' '}
+          and restart the dev server.
         </p>
         <p className="text-foreground-muted text-xs">
-          {product.name} will not start without them — there is no offline mode, because a starter
-          that fakes a backend teaches the wrong lesson.
+          {product.name} will not start without them — there is no offline mode,
+          because a starter that fakes a backend teaches the wrong lesson.
         </p>
       </div>
       <a

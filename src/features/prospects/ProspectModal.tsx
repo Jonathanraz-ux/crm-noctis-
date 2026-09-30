@@ -114,7 +114,9 @@ export function ProspectModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-xl">
         <DialogHeader>
-          <DialogTitle>{isEditing ? 'Edit Prospect' : 'Add New Prospect'}</DialogTitle>
+          <DialogTitle>
+            {isEditing ? 'Edit Prospect' : 'Add New Prospect'}
+          </DialogTitle>
           <DialogDescription>
             {isEditing
               ? 'Update details for this lead or prospective account.'
@@ -123,7 +125,7 @@ export function ProspectModal({
         </DialogHeader>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 pt-2">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Controller
               name="name"
               control={control}
@@ -156,7 +158,7 @@ export function ProspectModal({
             />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Controller
               name="email"
               control={control}
@@ -190,7 +192,7 @@ export function ProspectModal({
             />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="space-y-1.5">
               <Label htmlFor="source-select">Lead Source</Label>
               <Controller

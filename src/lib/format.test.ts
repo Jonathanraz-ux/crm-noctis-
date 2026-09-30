@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { formatCurrency, formatDate, formatNumber, formatPercent, getAvatarColor, getInitials } from './format';
+import {
+  formatCurrency,
+  formatDate,
+  formatNumber,
+  formatPercent,
+  getAvatarColor,
+  getInitials,
+} from './format';
 
 describe('formatDate', () => {
   it('formats dates consistently', () => {

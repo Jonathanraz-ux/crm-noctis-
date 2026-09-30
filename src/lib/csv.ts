@@ -82,7 +82,10 @@ export function downloadTable<T>(
 ): number {
   const headers = columns.map((column) => column.header);
   const body = rows.map((row) => columns.map((column) => column.value(row)));
-  downloadCsv(safeFilename(filename), toCsv(headers, body, { bom: true, ...options }));
+  downloadCsv(
+    safeFilename(filename),
+    toCsv(headers, body, { bom: true, ...options }),
+  );
   return rows.length;
 }
 

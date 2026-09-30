@@ -9,7 +9,11 @@ import { Button } from '@/components/ui/button';
 import { Label, Select } from '@/components/ui/primitives';
 import { useAuth } from '@/providers/AuthProvider';
 import { useToast } from '@/providers/ToastProvider';
-import { useTasks, useDeleteTask, useToggleTaskStatus } from '@/features/tasks/tasks.hooks';
+import {
+  useTasks,
+  useDeleteTask,
+  useToggleTaskStatus,
+} from '@/features/tasks/tasks.hooks';
 import { TaskModal } from '@/features/tasks/TaskModal';
 import type { Task } from '@/lib/types/database';
 import { formatDate } from '@/lib/format';
@@ -70,7 +74,10 @@ export function TasksPage() {
   const handleDelete = async () => {
     if (!deleteTarget) return;
     try {
-      await deleteMutation.mutateAsync({ organizationId: orgId, id: deleteTarget.id });
+      await deleteMutation.mutateAsync({
+        organizationId: orgId,
+        id: deleteTarget.id,
+      });
       success('Task deleted');
     } catch (caught) {
       toastError('Delete failed', toErrorMessage(caught));
@@ -85,7 +92,9 @@ export function TasksPage() {
         id: task.id,
         currentStatus: task.status,
       });
-      success(task.status === 'completed' ? 'Task marked pending' : 'Task completed');
+      success(
+        task.status === 'completed' ? 'Task marked pending' : 'Task completed',
+      );
     } catch (caught) {
       toastError('Update failed', toErrorMessage(caught));
     }
@@ -93,14 +102,11 @@ export function TasksPage() {
 
   const handleExport = () => {
     if (!data?.tasks?.length) return;
-    exportCsv(data.tasks, `tasks-${new Date().toISOString().slice(0, 10)}.csv`, [
-      'title',
-      'description',
-      'status',
-      'priority',
-      'due_date',
-      'created_at',
-    ]);
+    exportCsv(
+      data.tasks,
+      `tasks-${new Date().toISOString().slice(0, 10)}.csv`,
+      ['title', 'description', 'status', 'priority', 'due_date', 'created_at'],
+    );
   };
 
   const columns: Column<Task>[] = [
@@ -114,7 +120,7 @@ export function TasksPage() {
             e.stopPropagation();
             handleToggle(row);
           }}
-          className="text-foreground-muted hover:text-primary transition-colors cursor-pointer"
+          className="text-foreground-muted hover:text-primary cursor-pointer transition-colors"
           title={row.status === 'completed' ? 'Mark pending' : 'Mark completed'}
         >
           {row.status === 'completed' ? (
@@ -131,11 +137,15 @@ export function TasksPage() {
       sortable: true,
       render: (row) => (
         <div className="flex flex-col">
-          <span className={`font-medium ${row.status === 'completed' ? 'line-through text-foreground-muted' : 'text-foreground'}`}>
+          <span
+            className={`font-medium ${row.status === 'completed' ? 'text-foreground-muted line-through' : 'text-foreground'}`}
+          >
             {row.title}
           </span>
           {row.description && (
-            <span className="text-xs text-foreground-muted truncate max-w-xs">{row.description}</span>
+            <span className="text-foreground-muted max-w-xs truncate text-xs">
+              {row.description}
+            </span>
           )}
         </div>
       ),
@@ -150,18 +160,26 @@ export function TasksPage() {
       key: 'priority',
       header: 'Priority',
       sortable: true,
-      render: (row) => <TaskPriorityBadge priority={row.priority as TaskPriority} />,
+      render: (row) => (
+        <TaskPriorityBadge priority={row.priority as TaskPriority} />
+      ),
     },
     {
       key: 'due_date',
       header: 'Due Date',
       sortable: true,
       render: (row) => {
-        if (!row.due_date) return <span className="text-foreground-muted">-</span>;
+        if (!row.due_date)
+          return <span className="text-foreground-muted">-</span>;
         const isOverdue =
-          row.status !== 'completed' && new Date(row.due_date).getTime() < Date.now();
+          row.status !== 'completed' &&
+          new Date(row.due_date).getTime() < Date.now();
         return (
-          <span className={isOverdue ? 'text-rose-500 font-medium' : 'text-foreground-muted'}>
+          <span
+            className={
+              isOverdue ? 'font-medium text-rose-500' : 'text-foreground-muted'
+            }
+          >
             {formatDate(row.due_date)}
             {isOverdue && ' (Overdue)'}
           </span>
@@ -172,14 +190,18 @@ export function TasksPage() {
       key: 'created_at',
       header: 'Created',
       sortable: true,
-      render: (row) => <span className="text-foreground-muted">{formatDate(row.created_at)}</span>,
+      render: (row) => (
+        <span className="text-foreground-muted">
+          {formatDate(row.created_at)}
+        </span>
+      ),
     },
     {
       key: 'actions',
       header: '',
       align: 'right',
       render: (row) => (
-        <div className="flex items-center gap-1 justify-end">
+        <div className="flex items-center justify-end gap-1">
           <Button
             size="sm"
             variant="ghost"
@@ -208,9 +230,16 @@ export function TasksPage() {
   ];
 
   return (
-    <div className="space-y-5 animate-fade-in">
-      <PageHeader title="Tasks" description="Track follow-ups, calls, and actions across your team.">
-        <Button leftIcon={<Download className="size-4" />} variant="secondary" onClick={handleExport}>
+    <div className="animate-fade-in space-y-5">
+      <PageHeader
+        title="Tasks"
+        description="Track follow-ups, calls, and actions across your team."
+      >
+        <Button
+          leftIcon={<Download className="size-4" />}
+          variant="secondary"
+          onClick={handleExport}
+        >
           Export
         </Button>
         <Button
@@ -225,9 +254,9 @@ export function TasksPage() {
       </PageHeader>
 
       {/* Filter and search bar */}
-      <div className="flex flex-col sm:flex-row gap-3">
+      <div className="flex flex-col gap-3 sm:flex-row">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-foreground-muted pointer-events-none" />
+          <Search className="text-foreground-muted pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2" />
           <input
             type="text"
             placeholder="Search tasks..."
@@ -236,12 +265,14 @@ export function TasksPage() {
               setSearch(e.target.value);
               setPage(1);
             }}
-            className="w-full h-9 pl-9 pr-3 rounded-md bg-surface border border-border text-sm placeholder:text-foreground-muted focus:outline-none focus:ring-1 focus:ring-primary"
+            className="bg-surface border-border placeholder:text-foreground-muted focus:ring-primary h-9 w-full rounded-md border pr-3 pl-9 text-sm focus:ring-1 focus:outline-none"
           />
         </div>
 
         <div className="flex items-center gap-2">
-          <Label className="text-xs text-foreground-muted whitespace-nowrap">Status:</Label>
+          <Label className="text-foreground-muted text-xs whitespace-nowrap">
+            Status:
+          </Label>
           <Select
             value={statusFilter}
             onChange={(e) => {
@@ -260,7 +291,9 @@ export function TasksPage() {
         </div>
 
         <div className="flex items-center gap-2">
-          <Label className="text-xs text-foreground-muted whitespace-nowrap">Priority:</Label>
+          <Label className="text-foreground-muted text-xs whitespace-nowrap">
+            Priority:
+          </Label>
           <Select
             value={priorityFilter}
             onChange={(e) => {

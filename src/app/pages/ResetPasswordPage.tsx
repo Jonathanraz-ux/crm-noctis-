@@ -17,10 +17,14 @@ export function ResetPasswordPage() {
     control,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<ResetPasswordInput>({ resolver: zodResolver(resetPasswordSchema) });
+  } = useForm<ResetPasswordInput>({
+    resolver: zodResolver(resetPasswordSchema),
+  });
 
   const onSubmit = async (data: ResetPasswordInput) => {
-    const { error } = await supabase.auth.updateUser({ password: data.password });
+    const { error } = await supabase.auth.updateUser({
+      password: data.password,
+    });
     if (error) {
       toastError('Reset failed', error.message);
       return;
@@ -31,8 +35,8 @@ export function ResetPasswordPage() {
 
   return (
     <div className="bg-surface-subtle flex min-h-screen items-center justify-center p-4">
-      <div className="bg-surface border-line w-full max-w-md space-y-6 rounded-lg border p-8 shadow-md animate-fade-in">
-        <div className="text-center space-y-2">
+      <div className="bg-surface border-line animate-fade-in w-full max-w-md space-y-6 rounded-lg border p-8 shadow-md">
+        <div className="space-y-2 text-center">
           <span className="bg-primary text-on-primary mx-auto grid size-10 place-items-center rounded-lg">
             <Kanban className="size-5" />
           </span>

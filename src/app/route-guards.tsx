@@ -32,7 +32,13 @@ export function RequireAuth() {
 
   if (isLoading) return <FullPageLoader label="Checking your session" />;
   if (!user)
-    return <Navigate to="/login" replace state={{ from: location.pathname + location.search }} />;
+    return (
+      <Navigate
+        to="/login"
+        replace
+        state={{ from: location.pathname + location.search }}
+      />
+    );
   return <Outlet />;
 }
 

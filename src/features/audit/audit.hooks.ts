@@ -9,7 +9,8 @@ export const auditKeys = {
   all: ['audit'] as const,
   list: (organizationId: string | null, page: number, entity: string) =>
     ['audit', 'list', organizationId, page, entity] as const,
-  entities: (organizationId: string | null) => ['audit', 'entities', organizationId] as const,
+  entities: (organizationId: string | null) =>
+    ['audit', 'entities', organizationId] as const,
 };
 
 export function useAuditLog(page: number, entity: string) {

@@ -9,7 +9,9 @@ import type { RoleKey } from '@/config/product';
  *    are visible alongside active members.
  * 2. Authenticated user ID is inferred from the JWT by PostgreSQL RLS.
  */
-export async function listMembers(organizationId: string): Promise<MemberRow[]> {
+export async function listMembers(
+  organizationId: string,
+): Promise<MemberRow[]> {
   const { data, error } = await supabase
     .from('v_members')
     .select(
@@ -45,12 +47,18 @@ export async function updateMembership(
     user_id?: string | null;
   },
 ): Promise<void> {
-  const { error } = await supabase.from('memberships').update(changes).eq('id', membershipId);
+  const { error } = await supabase
+    .from('memberships')
+    .update(changes)
+    .eq('id', membershipId);
   if (error) throw error;
 }
 
 /** Remove membership from organization. */
 export async function removeMember(membershipId: string): Promise<void> {
-  const { error } = await supabase.from('memberships').delete().eq('id', membershipId);
+  const { error } = await supabase
+    .from('memberships')
+    .delete()
+    .eq('id', membershipId);
   if (error) throw error;
 }

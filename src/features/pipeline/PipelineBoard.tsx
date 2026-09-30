@@ -1,6 +1,10 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { DEAL_STAGES, DEAL_STAGE_LABELS, type DealStage } from '@/config/product';
+import {
+  DEAL_STAGES,
+  DEAL_STAGE_LABELS,
+  type DealStage,
+} from '@/config/product';
 import { formatCurrency, formatDate } from '@/lib/format';
 import { toErrorMessage } from '@/lib/errors';
 import type { Deal } from '@/lib/types/database';
@@ -56,28 +60,31 @@ export function PipelineBoard({
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4 overflow-x-auto pb-4">
+    <div className="grid grid-cols-1 gap-4 overflow-x-auto pb-4 md:grid-cols-3 lg:grid-cols-6">
       {DEAL_STAGES.map((stage) => {
         const stageDeals = deals.filter((d) => d.stage === stage);
-        const stageTotal = stageDeals.reduce((sum, d) => sum + (Number(d.value) || 0), 0);
+        const stageTotal = stageDeals.reduce(
+          (sum, d) => sum + (Number(d.value) || 0),
+          0,
+        );
 
         return (
           <div
             key={stage}
-            className="flex flex-col rounded-xl bg-surface-subtle border border-line p-3 min-w-[260px]"
+            className="bg-surface-subtle border-line flex min-w-[260px] flex-col rounded-xl border p-3"
           >
             {/* Stage Column Header */}
-            <div className="flex items-center justify-between pb-3 border-b border-line mb-3">
+            <div className="border-line mb-3 flex items-center justify-between border-b pb-3">
               <div>
                 <div className="flex items-center gap-1.5">
-                  <h3 className="font-semibold text-xs text-foreground uppercase tracking-wider">
+                  <h3 className="text-foreground text-xs font-semibold tracking-wider uppercase">
                     {DEAL_STAGE_LABELS[stage]}
                   </h3>
-                  <span className="size-5 rounded-full bg-surface-muted text-[11px] font-bold text-foreground-muted flex items-center justify-center">
+                  <span className="bg-surface-muted text-foreground-muted flex size-5 items-center justify-center rounded-full text-[11px] font-bold">
                     {stageDeals.length}
                   </span>
                 </div>
-                <p className="text-xs font-semibold text-foreground-muted tabular mt-0.5">
+                <p className="text-foreground-muted tabular mt-0.5 text-xs font-semibold">
                   {formatCurrency(stageTotal)}
                 </p>
               </div>
@@ -95,10 +102,12 @@ export function PipelineBoard({
             </div>
 
             {/* Stage Cards */}
-            <div className="flex flex-col gap-2.5 flex-1 min-h-[150px]">
+            <div className="flex min-h-[150px] flex-1 flex-col gap-2.5">
               {stageDeals.length === 0 ? (
-                <div className="flex-1 flex items-center justify-center border border-dashed border-line rounded-lg p-4 text-center">
-                  <p className="text-[11px] text-foreground-subtle">No deals in this stage</p>
+                <div className="border-line flex flex-1 items-center justify-center rounded-lg border border-dashed p-4 text-center">
+                  <p className="text-foreground-subtle text-[11px]">
+                    No deals in this stage
+                  </p>
                 </div>
               ) : (
                 stageDeals.map((deal) => {
@@ -107,11 +116,11 @@ export function PipelineBoard({
                   return (
                     <Card
                       key={deal.id}
-                      className="cursor-pointer transition-all hover:border-primary hover:shadow-xs group relative bg-surface"
+                      className="hover:border-primary group bg-surface relative cursor-pointer transition-all hover:shadow-xs"
                       onClick={() => onEditDeal(deal)}
                     >
-                      <CardHeader className="p-3 pb-2 flex flex-row items-start justify-between space-y-0">
-                        <CardTitle className="text-xs font-semibold text-foreground line-clamp-2 leading-snug">
+                      <CardHeader className="flex flex-row items-start justify-between space-y-0 p-3 pb-2">
+                        <CardTitle className="text-foreground line-clamp-2 text-xs leading-snug font-semibold">
                           {deal.title}
                         </CardTitle>
                         {canEdit ? (
@@ -121,13 +130,15 @@ export function PipelineBoard({
                                 <Button
                                   variant="ghost"
                                   size="icon-sm"
-                                  className="size-6 text-foreground-subtle hover:text-foreground"
+                                  className="text-foreground-subtle hover:text-foreground size-6"
                                 >
                                   <MoreHorizontal size={14} />
                                 </Button>
                               </DropdownMenuTrigger>
                               <DropdownMenuContent align="end">
-                                <DropdownMenuLabel>Move to Stage</DropdownMenuLabel>
+                                <DropdownMenuLabel>
+                                  Move to Stage
+                                </DropdownMenuLabel>
                                 {DEAL_STAGES.map((st) => (
                                   <DropdownMenuItem
                                     key={st}
@@ -138,7 +149,9 @@ export function PipelineBoard({
                                   </DropdownMenuItem>
                                 ))}
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem onClick={() => onEditDeal(deal)}>
+                                <DropdownMenuItem
+                                  onClick={() => onEditDeal(deal)}
+                                >
                                   Edit Details
                                 </DropdownMenuItem>
                               </DropdownMenuContent>
@@ -148,24 +161,31 @@ export function PipelineBoard({
                       </CardHeader>
 
                       <CardContent className="p-3 pt-0 text-xs">
-                        <div className="font-bold text-sm text-foreground tabular mb-2">
+                        <div className="text-foreground tabular mb-2 text-sm font-bold">
                           {formatCurrency(deal.value)}
                         </div>
 
                         {deal.prospects ? (
-                          <div className="flex items-center gap-1.5 text-foreground-muted text-[11px] mb-1 truncate">
-                            <Building2 size={12} className="shrink-0 text-foreground-subtle" />
+                          <div className="text-foreground-muted mb-1 flex items-center gap-1.5 truncate text-[11px]">
+                            <Building2
+                              size={12}
+                              className="text-foreground-subtle shrink-0"
+                            />
                             <span className="truncate">
                               {deal.prospects.name}{' '}
-                              {deal.prospects.company ? `(${deal.prospects.company})` : ''}
+                              {deal.prospects.company
+                                ? `(${deal.prospects.company})`
+                                : ''}
                             </span>
                           </div>
                         ) : null}
 
                         {deal.expected_close_date ? (
-                          <div className="flex items-center gap-1.5 text-foreground-subtle text-[11px]">
+                          <div className="text-foreground-subtle flex items-center gap-1.5 text-[11px]">
                             <Calendar size={12} className="shrink-0" />
-                            <span>Target: {formatDate(deal.expected_close_date)}</span>
+                            <span>
+                              Target: {formatDate(deal.expected_close_date)}
+                            </span>
                           </div>
                         ) : null}
                       </CardContent>

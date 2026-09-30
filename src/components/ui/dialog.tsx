@@ -1,6 +1,10 @@
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { X } from 'lucide-react';
-import type { ComponentPropsWithoutRef, ElementRef, HTMLAttributes } from 'react';
+import type {
+  ComponentPropsWithoutRef,
+  ElementRef,
+  HTMLAttributes,
+} from 'react';
 import { forwardRef } from 'react';
 
 import { cn } from '@/lib/utils';
@@ -45,7 +49,7 @@ export const DialogContent = forwardRef<
       <DialogPrimitive.Close
         className={cn(
           'text-foreground-subtle hover:text-foreground absolute top-4 right-4 rounded-sm p-1',
-          'transition-colors focus-visible:outline-2 focus-visible:outline-primary',
+          'focus-visible:outline-primary transition-colors focus-visible:outline-2',
         )}
       >
         <X size={16} />
@@ -56,14 +60,28 @@ export const DialogContent = forwardRef<
 ));
 DialogContent.displayName = DialogPrimitive.Content.displayName;
 
-export function DialogHeader({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn('flex flex-col space-y-1.5 text-left', className)} {...props} />;
-}
-
-export function DialogFooter({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+export function DialogHeader({
+  className,
+  ...props
+}: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn('flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 pt-2', className)}
+      className={cn('flex flex-col space-y-1.5 text-left', className)}
+      {...props}
+    />
+  );
+}
+
+export function DialogFooter({
+  className,
+  ...props
+}: HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div
+      className={cn(
+        'flex flex-col-reverse pt-2 sm:flex-row sm:justify-end sm:space-x-2',
+        className,
+      )}
       {...props}
     />
   );
@@ -75,7 +93,10 @@ export const DialogTitle = forwardRef<
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Title
     ref={ref}
-    className={cn('text-foreground text-lg font-semibold leading-none tracking-tight', className)}
+    className={cn(
+      'text-foreground text-lg leading-none font-semibold tracking-tight',
+      className,
+    )}
     {...props}
   />
 ));

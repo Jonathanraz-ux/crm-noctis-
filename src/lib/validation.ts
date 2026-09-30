@@ -57,7 +57,12 @@ export const resetPasswordSchema = z
 
 export const profileSchema = z.object({
   fullName: z.string().trim().max(100).optional().or(z.literal('')),
-  avatarUrl: z.string().trim().url('Must be a valid URL').optional().or(z.literal('')),
+  avatarUrl: z
+    .string()
+    .trim()
+    .url('Must be a valid URL')
+    .optional()
+    .or(z.literal('')),
 });
 
 export type ProfileValues = z.infer<typeof profileSchema>;
@@ -84,7 +89,12 @@ export const prospectSchema = z.object({
     .min(1, 'Prospect or lead name is required')
     .max(160, 'Name must be less than 160 characters')
     .transform((v) => v.trim()),
-  company: z.string().max(120).optional().nullable().transform((v) => v?.trim() || null),
+  company: z
+    .string()
+    .max(120)
+    .optional()
+    .nullable()
+    .transform((v) => v?.trim() || null),
   email: z
     .string()
     .email('Invalid email')
@@ -92,12 +102,27 @@ export const prospectSchema = z.object({
     .nullable()
     .or(z.literal(''))
     .transform((v) => (v ? v.trim().toLowerCase() : null)),
-  phone: z.string().max(40).optional().nullable().transform((v) => v?.trim() || null),
+  phone: z
+    .string()
+    .max(40)
+    .optional()
+    .nullable()
+    .transform((v) => v?.trim() || null),
   source: z.enum(PROSPECT_SOURCES).default('website'),
   status: z.enum(PROSPECT_STATUSES).default('new'),
   tags: z.array(z.string()).default([]),
-  notes: z.string().optional().nullable().transform((v) => v?.trim() || null),
-  owner_id: z.string().uuid().optional().nullable().or(z.literal('')).transform((v) => (v ? v : null)),
+  notes: z
+    .string()
+    .optional()
+    .nullable()
+    .transform((v) => v?.trim() || null),
+  owner_id: z
+    .string()
+    .uuid()
+    .optional()
+    .nullable()
+    .or(z.literal(''))
+    .transform((v) => (v ? v : null)),
 });
 
 export const contactSchema = z.object({
@@ -113,12 +138,37 @@ export const contactSchema = z.object({
     .nullable()
     .or(z.literal(''))
     .transform((v) => (v ? v.trim().toLowerCase() : null)),
-  phone: z.string().max(40).optional().nullable().transform((v) => v?.trim() || null),
-  job_title: z.string().max(100).optional().nullable().transform((v) => v?.trim() || null),
-  company: z.string().max(120).optional().nullable().transform((v) => v?.trim() || null),
-  prospect_id: z.string().uuid().optional().nullable().or(z.literal('')).transform((v) => (v ? v : null)),
+  phone: z
+    .string()
+    .max(40)
+    .optional()
+    .nullable()
+    .transform((v) => v?.trim() || null),
+  job_title: z
+    .string()
+    .max(100)
+    .optional()
+    .nullable()
+    .transform((v) => v?.trim() || null),
+  company: z
+    .string()
+    .max(120)
+    .optional()
+    .nullable()
+    .transform((v) => v?.trim() || null),
+  prospect_id: z
+    .string()
+    .uuid()
+    .optional()
+    .nullable()
+    .or(z.literal(''))
+    .transform((v) => (v ? v : null)),
   tags: z.array(z.string()).default([]),
-  notes: z.string().optional().nullable().transform((v) => v?.trim() || null),
+  notes: z
+    .string()
+    .optional()
+    .nullable()
+    .transform((v) => v?.trim() || null),
 });
 
 export const dealSchema = z.object({
@@ -138,11 +188,33 @@ export const dealSchema = z.object({
     .nullable()
     .or(z.literal(''))
     .transform((v) => (v ? v : null)),
-  prospect_id: z.string().uuid().optional().nullable().or(z.literal('')).transform((v) => (v ? v : null)),
-  contact_id: z.string().uuid().optional().nullable().or(z.literal('')).transform((v) => (v ? v : null)),
-  owner_id: z.string().uuid().optional().nullable().or(z.literal('')).transform((v) => (v ? v : null)),
+  prospect_id: z
+    .string()
+    .uuid()
+    .optional()
+    .nullable()
+    .or(z.literal(''))
+    .transform((v) => (v ? v : null)),
+  contact_id: z
+    .string()
+    .uuid()
+    .optional()
+    .nullable()
+    .or(z.literal(''))
+    .transform((v) => (v ? v : null)),
+  owner_id: z
+    .string()
+    .uuid()
+    .optional()
+    .nullable()
+    .or(z.literal(''))
+    .transform((v) => (v ? v : null)),
   tags: z.array(z.string()).default([]),
-  notes: z.string().optional().nullable().transform((v) => v?.trim() || null),
+  notes: z
+    .string()
+    .optional()
+    .nullable()
+    .transform((v) => v?.trim() || null),
 });
 
 export const taskSchema = z.object({
@@ -151,7 +223,11 @@ export const taskSchema = z.object({
     .min(1, 'Task title is required')
     .max(200, 'Title must be less than 200 characters')
     .transform((v) => v.trim()),
-  description: z.string().optional().nullable().transform((v) => v?.trim() || null),
+  description: z
+    .string()
+    .optional()
+    .nullable()
+    .transform((v) => v?.trim() || null),
   due_date: z
     .string()
     .optional()
@@ -160,17 +236,59 @@ export const taskSchema = z.object({
     .transform((v) => (v ? v : null)),
   status: z.enum(TASK_STATUSES).default('pending'),
   priority: z.enum(TASK_PRIORITIES).default('medium'),
-  assignee_id: z.string().uuid().optional().nullable().or(z.literal('')).transform((v) => (v ? v : null)),
-  prospect_id: z.string().uuid().optional().nullable().or(z.literal('')).transform((v) => (v ? v : null)),
-  contact_id: z.string().uuid().optional().nullable().or(z.literal('')).transform((v) => (v ? v : null)),
-  deal_id: z.string().uuid().optional().nullable().or(z.literal('')).transform((v) => (v ? v : null)),
+  assignee_id: z
+    .string()
+    .uuid()
+    .optional()
+    .nullable()
+    .or(z.literal(''))
+    .transform((v) => (v ? v : null)),
+  prospect_id: z
+    .string()
+    .uuid()
+    .optional()
+    .nullable()
+    .or(z.literal(''))
+    .transform((v) => (v ? v : null)),
+  contact_id: z
+    .string()
+    .uuid()
+    .optional()
+    .nullable()
+    .or(z.literal(''))
+    .transform((v) => (v ? v : null)),
+  deal_id: z
+    .string()
+    .uuid()
+    .optional()
+    .nullable()
+    .or(z.literal(''))
+    .transform((v) => (v ? v : null)),
 });
 
 export const noteSchema = z.object({
   body: z.string().trim().min(1, 'Note content cannot be empty'),
-  prospect_id: z.string().uuid().optional().nullable().or(z.literal('')).transform((v) => (v ? v : null)),
-  contact_id: z.string().uuid().optional().nullable().or(z.literal('')).transform((v) => (v ? v : null)),
-  deal_id: z.string().uuid().optional().nullable().or(z.literal('')).transform((v) => (v ? v : null)),
+  prospect_id: z
+    .string()
+    .uuid()
+    .optional()
+    .nullable()
+    .or(z.literal(''))
+    .transform((v) => (v ? v : null)),
+  contact_id: z
+    .string()
+    .uuid()
+    .optional()
+    .nullable()
+    .or(z.literal(''))
+    .transform((v) => (v ? v : null)),
+  deal_id: z
+    .string()
+    .uuid()
+    .optional()
+    .nullable()
+    .or(z.literal(''))
+    .transform((v) => (v ? v : null)),
 });
 
 export type SignInInput = z.infer<typeof signInSchema>;

@@ -27,9 +27,13 @@ export function useRoleCatalog() {
         { data: links, error: linksError },
         { data: permissions, error: permissionsError },
       ] = await Promise.all([
-        supabase.from('roles').select('id, key, name, description, rank, is_system'),
+        supabase
+          .from('roles')
+          .select('id, key, name, description, rank, is_system'),
         supabase.from('role_permissions').select('role_id, permission_code'),
-        supabase.from('permissions').select('code, label, category, description'),
+        supabase
+          .from('permissions')
+          .select('code, label, category, description'),
       ]);
 
       if (rolesError) throw rolesError;

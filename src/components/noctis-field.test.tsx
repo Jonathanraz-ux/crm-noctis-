@@ -19,7 +19,12 @@ describe('NoctisField', () => {
   });
 
   it('renders helper text and wires aria-describedby', () => {
-    render(<NoctisField id="prospect-email" helperText="We will never share your email" />);
+    render(
+      <NoctisField
+        id="prospect-email"
+        helperText="We will never share your email"
+      />,
+    );
     const helper = screen.getByText('We will never share your email');
     const input = screen.getByRole('textbox');
     expect(helper).toHaveAttribute('id', 'prospect-email-message');
@@ -47,7 +52,12 @@ describe('NoctisField', () => {
   });
 
   it('prioritizes success message over helper text', () => {
-    render(<NoctisField successMessage="Saved successfully" helperText="Helpful hint" />);
+    render(
+      <NoctisField
+        successMessage="Saved successfully"
+        helperText="Helpful hint"
+      />,
+    );
     expect(screen.getByText('Saved successfully')).toBeInTheDocument();
     expect(screen.queryByText('Helpful hint')).not.toBeInTheDocument();
   });
@@ -63,7 +73,9 @@ describe('NoctisField', () => {
   });
 
   it('handles controlled input changes', () => {
-    const { rerender } = render(<NoctisField value="Initial" onChange={() => {}} />);
+    const { rerender } = render(
+      <NoctisField value="Initial" onChange={() => {}} />,
+    );
     const input = screen.getByRole('textbox');
     expect(input).toHaveValue('Initial');
     rerender(<NoctisField value="Updated" onChange={() => {}} />);
@@ -71,13 +83,22 @@ describe('NoctisField', () => {
   });
 
   it('treats null/undefined value as empty string rather than stringifying', () => {
-    render(<NoctisField value={null as unknown as string} onChange={() => {}} />);
+    render(
+      <NoctisField value={null as unknown as string} onChange={() => {}} />,
+    );
     const input = screen.getByRole('textbox');
     expect(input).toHaveValue('');
   });
 
   it('renders character counter when requested', () => {
-    render(<NoctisField id="count-test" defaultValue="Testing" showCharacterCount maxLength={20} />);
+    render(
+      <NoctisField
+        id="count-test"
+        defaultValue="Testing"
+        showCharacterCount
+        maxLength={20}
+      />,
+    );
     const counter = screen.getByText('7 / 20');
     expect(counter).toBeInTheDocument();
     const input = screen.getByRole('textbox');
@@ -87,7 +108,9 @@ describe('NoctisField', () => {
   it('shows clear button when clearable and text exists', async () => {
     const user = userEvent.setup();
     const onClear = vi.fn();
-    render(<NoctisField defaultValue="Some text" clearable onClear={onClear} />);
+    render(
+      <NoctisField defaultValue="Some text" clearable onClear={onClear} />,
+    );
     const clearBtn = screen.getByRole('button', { name: /clear field/i });
     expect(clearBtn).toBeInTheDocument();
     await user.click(clearBtn);
@@ -96,7 +119,9 @@ describe('NoctisField', () => {
 
   it('hides clear button when input is empty', () => {
     render(<NoctisField defaultValue="" clearable />);
-    expect(screen.queryByRole('button', { name: /clear field/i })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: /clear field/i }),
+    ).not.toBeInTheDocument();
   });
 
   it('toggles password reveal on click', async () => {
@@ -115,12 +140,18 @@ describe('NoctisField', () => {
   });
 
   it('renders leading element slot', () => {
-    render(<NoctisField leadingElement={<span data-testid="lead-icon">$</span>} />);
+    render(
+      <NoctisField leadingElement={<span data-testid="lead-icon">$</span>} />,
+    );
     expect(screen.getByTestId('lead-icon')).toBeInTheDocument();
   });
 
   it('renders trailing element slot', () => {
-    render(<NoctisField trailingElement={<span data-testid="trail-icon">USD</span>} />);
+    render(
+      <NoctisField
+        trailingElement={<span data-testid="trail-icon">USD</span>}
+      />,
+    );
     expect(screen.getByTestId('trail-icon')).toBeInTheDocument();
   });
 
@@ -128,19 +159,30 @@ describe('NoctisField', () => {
     render(<NoctisField disabled defaultValue="Disabled value" clearable />);
     const input = screen.getByRole('textbox');
     expect(input).toBeDisabled();
-    expect(screen.queryByRole('button', { name: /clear field/i })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: /clear field/i }),
+    ).not.toBeInTheDocument();
   });
 
   it('applies readOnly state properly', () => {
     render(<NoctisField readOnly defaultValue="Read only text" clearable />);
     const input = screen.getByRole('textbox');
     expect(input).toHaveAttribute('readonly');
-    expect(screen.queryByRole('button', { name: /clear field/i })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: /clear field/i }),
+    ).not.toBeInTheDocument();
   });
 
   it('forwards ref to inner input element', () => {
     let inputEl: HTMLInputElement | null = null;
-    render(<NoctisField ref={(el) => { inputEl = el; }} placeholder="Ref test" />);
+    render(
+      <NoctisField
+        ref={(el) => {
+          inputEl = el;
+        }}
+        placeholder="Ref test"
+      />,
+    );
     expect(inputEl).toBeInstanceOf(HTMLInputElement);
   });
 
@@ -154,7 +196,10 @@ describe('NoctisField', () => {
       />,
     );
     const input = screen.getByRole('textbox');
-    expect(input).toHaveAttribute('aria-describedby', 'combo-test-message combo-test-count');
+    expect(input).toHaveAttribute(
+      'aria-describedby',
+      'combo-test-message combo-test-count',
+    );
   });
 
   it('calls onBlur handler when focus leaves input', () => {

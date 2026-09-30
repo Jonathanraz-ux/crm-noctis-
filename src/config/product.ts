@@ -28,7 +28,13 @@ export const storageKeys = {
   sidebarCollapsed: 'noctis-crm.sidebar-collapsed',
 } as const;
 
-export const ROLE_KEYS = ['owner', 'admin', 'manager', 'member', 'viewer'] as const;
+export const ROLE_KEYS = [
+  'owner',
+  'admin',
+  'manager',
+  'member',
+  'viewer',
+] as const;
 export type RoleKey = (typeof ROLE_KEYS)[number];
 
 export const ROLE_LABELS: Record<RoleKey, string> = {
@@ -99,7 +105,12 @@ export const DEAL_STAGE_LABELS: Record<DealStage, string> = {
   lost: 'Closed Lost',
 };
 
-export const TASK_STATUSES = ['pending', 'in_progress', 'completed', 'cancelled'] as const;
+export const TASK_STATUSES = [
+  'pending',
+  'in_progress',
+  'completed',
+  'cancelled',
+] as const;
 export type TaskStatus = (typeof TASK_STATUSES)[number];
 
 export const TASK_STATUS_LABELS: Record<TaskStatus, string> = {

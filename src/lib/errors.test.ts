@@ -3,7 +3,9 @@ import { isPermissionError, toErrorMessage } from './errors';
 
 describe('toErrorMessage', () => {
   it('maps network failures to friendly advice', () => {
-    expect(toErrorMessage(new Error('Failed to fetch'))).toContain('Check your connection');
+    expect(toErrorMessage(new Error('Failed to fetch'))).toContain(
+      'Check your connection',
+    );
   });
 
   it('maps invalid credentials properly', () => {
@@ -23,15 +25,20 @@ describe('toErrorMessage', () => {
   });
 
   it('handles RLS permission errors', () => {
-    expect(toErrorMessage(new Error('new row violates row-level security policy for table prospects'))).toBe(
-      'You do not have permission to do that.',
-    );
+    expect(
+      toErrorMessage(
+        new Error(
+          'new row violates row-level security policy for table prospects',
+        ),
+      ),
+    ).toBe('You do not have permission to do that.');
   });
 
   it('handles object error payloads from PostgREST', () => {
     expect(
       toErrorMessage({
-        message: 'duplicate key value violates unique constraint "organizations_slug_key"',
+        message:
+          'duplicate key value violates unique constraint "organizations_slug_key"',
       }),
     ).toBe('That value is already taken. Please choose a different one.');
   });
@@ -44,7 +51,9 @@ describe('toErrorMessage', () => {
 
 describe('isPermissionError', () => {
   it('detects RLS and 401/403 errors', () => {
-    expect(isPermissionError(new Error('permission denied for table deals'))).toBe(true);
+    expect(
+      isPermissionError(new Error('permission denied for table deals')),
+    ).toBe(true);
     expect(isPermissionError('403 Forbidden')).toBe(true);
     expect(isPermissionError('PGRST301')).toBe(true);
     expect(isPermissionError('Syntax error')).toBe(false);

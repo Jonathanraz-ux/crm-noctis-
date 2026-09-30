@@ -36,13 +36,15 @@ export function SignInPage() {
 
   return (
     <div className="bg-surface-subtle flex min-h-screen items-center justify-center p-4">
-      <div className="bg-surface border-line w-full max-w-md space-y-6 rounded-lg border p-8 shadow-md animate-fade-in">
-        <div className="text-center space-y-2">
+      <div className="bg-surface border-line animate-fade-in w-full max-w-md space-y-6 rounded-lg border p-8 shadow-md">
+        <div className="space-y-2 text-center">
           <span className="bg-primary text-on-primary mx-auto grid size-10 place-items-center rounded-lg">
             <Kanban className="size-5" />
           </span>
           <h1 className="text-2xl font-semibold">{product.shortName}</h1>
-          <p className="text-foreground-muted text-sm">Sign in to your account</p>
+          <p className="text-foreground-muted text-sm">
+            Sign in to your account
+          </p>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -96,9 +98,12 @@ export function SignInPage() {
           </Button>
         </form>
 
-        <p className="text-center text-xs text-foreground-muted">
+        <p className="text-foreground-muted text-center text-xs">
           Don't have an account?{' '}
-          <Link to="/signup" className="text-primary font-medium hover:underline">
+          <Link
+            to="/signup"
+            className="text-primary font-medium hover:underline"
+          >
             Create one
           </Link>
         </p>

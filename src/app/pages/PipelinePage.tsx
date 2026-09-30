@@ -20,7 +20,10 @@ export function PipelinePage() {
   const [editingDeal, setEditingDeal] = useState<Deal | null>(null);
   const [defaultStage, setDefaultStage] = useState<DealStage>(DEAL_STAGES[0]);
 
-  const { data, isLoading, error } = useDeals({ organizationId: orgId, pageSize: 200 });
+  const { data, isLoading, error } = useDeals({
+    organizationId: orgId,
+    pageSize: 200,
+  });
   const deals = data?.deals ?? [];
 
   const handleOpenChange = (open: boolean) => {
@@ -35,13 +38,16 @@ export function PipelinePage() {
   };
 
   return (
-    <div className="space-y-5 animate-fade-in">
+    <div className="animate-fade-in space-y-5">
       <PageHeader
         title="Pipeline"
         description="Visualize and manage your deal pipeline across stages."
       >
         {can('deals.create') && (
-          <Button leftIcon={<Plus className="size-4" />} onClick={() => openCreate(DEAL_STAGES[0])}>
+          <Button
+            leftIcon={<Plus className="size-4" />}
+            onClick={() => openCreate(DEAL_STAGES[0])}
+          >
             New Deal
           </Button>
         )}
@@ -49,10 +55,12 @@ export function PipelinePage() {
 
       {error ? (
         <Card className="border-danger/40">
-          <CardContent className="p-5 text-sm text-danger">{toErrorMessage(error)}</CardContent>
+          <CardContent className="text-danger p-5 text-sm">
+            {toErrorMessage(error)}
+          </CardContent>
         </Card>
       ) : isLoading ? (
-        <p className="text-sm text-foreground-muted">Loading pipeline…</p>
+        <p className="text-foreground-muted text-sm">Loading pipeline…</p>
       ) : deals.length === 0 ? (
         <EmptyState
           icon={<Kanban className="size-5" />}
@@ -60,7 +68,10 @@ export function PipelinePage() {
           description="Add your first deal to start tracking it through the stages."
           action={
             can('deals.create') ? (
-              <Button leftIcon={<Plus className="size-4" />} onClick={() => openCreate(DEAL_STAGES[0])}>
+              <Button
+                leftIcon={<Plus className="size-4" />}
+                onClick={() => openCreate(DEAL_STAGES[0])}
+              >
                 New Deal
               </Button>
             ) : undefined

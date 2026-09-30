@@ -80,7 +80,9 @@ function useSidebar() {
 }
 
 function useThemeToggle() {
-  const [isDark, setIsDark] = useState(() => document.documentElement.classList.contains('dark'));
+  const [isDark, setIsDark] = useState(() =>
+    document.documentElement.classList.contains('dark'),
+  );
 
   const cycle = () => {
     const root = document.documentElement;
@@ -99,7 +101,8 @@ function useThemeToggle() {
 }
 
 export function AppLayout({ children }: { children?: ReactNode }) {
-  const { isCollapsed, toggle, isMobileOpen, setIsMobileOpen, closeMobile } = useSidebar();
+  const { isCollapsed, toggle, isMobileOpen, setIsMobileOpen, closeMobile } =
+    useSidebar();
   const location = useLocation();
 
   return (
@@ -126,7 +129,11 @@ export function AppLayout({ children }: { children?: ReactNode }) {
             <span className="bg-primary text-on-primary grid size-7 shrink-0 place-items-center rounded-md">
               <Kanban className="size-4" />
             </span>
-            {!isCollapsed && <span className="truncate text-sm font-semibold">{product.shortName}</span>}
+            {!isCollapsed && (
+              <span className="truncate text-sm font-semibold">
+                {product.shortName}
+              </span>
+            )}
           </div>
 
           <div className="px-3 pt-4">
@@ -152,10 +159,18 @@ export function AppLayout({ children }: { children?: ReactNode }) {
               variant="ghost"
               size={isCollapsed ? 'icon' : 'sm'}
               onClick={toggle}
-              className={cn('w-full justify-start gap-2', isCollapsed && 'justify-center')}
+              className={cn(
+                'w-full justify-start gap-2',
+                isCollapsed && 'justify-center',
+              )}
               aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
             >
-              <ChevronLeft className={cn('transition-transform', isCollapsed && 'rotate-180')} />
+              <ChevronLeft
+                className={cn(
+                  'transition-transform',
+                  isCollapsed && 'rotate-180',
+                )}
+              />
               {!isCollapsed && 'Collapse'}
             </Button>
           </div>
@@ -240,7 +255,8 @@ function SidebarLink({
 }
 
 function WorkspaceSwitcher({ collapsed }: { collapsed: boolean }) {
-  const { organizations, activeOrganization, setActiveOrganizationId, role } = useAuth();
+  const { organizations, activeOrganization, setActiveOrganizationId, role } =
+    useAuth();
 
   if (organizations.length === 0) {
     return (
@@ -255,7 +271,10 @@ function WorkspaceSwitcher({ collapsed }: { collapsed: boolean }) {
       <Tooltip>
         <TooltipTrigger asChild>
           <div className="border-line bg-surface-subtle rounded-md border px-2 py-2 text-center">
-            <Building2 className="text-foreground-subtle mx-auto size-4" aria-hidden />
+            <Building2
+              className="text-foreground-subtle mx-auto size-4"
+              aria-hidden
+            />
           </div>
         </TooltipTrigger>
         <TooltipContent side="right">
@@ -272,7 +291,10 @@ function WorkspaceSwitcher({ collapsed }: { collapsed: boolean }) {
           type="button"
           className="border-line bg-surface-subtle hover:bg-surface-muted flex w-full items-center gap-2 rounded-md border px-2.5 py-2 text-left transition-colors"
         >
-          <Building2 className="text-foreground-subtle size-4 shrink-0" aria-hidden />
+          <Building2
+            className="text-foreground-subtle size-4 shrink-0"
+            aria-hidden
+          />
           <span className="min-w-0 flex-1">
             <span className="block truncate text-sm font-medium">
               {activeOrganization?.name ?? '—'}
@@ -289,7 +311,10 @@ function WorkspaceSwitcher({ collapsed }: { collapsed: boolean }) {
           <DropdownMenuItem
             key={org.id}
             onSelect={() => setActiveOrganizationId(org.id)}
-            className={cn(org.id === activeOrganization?.id && 'bg-surface-muted font-medium')}
+            className={cn(
+              org.id === activeOrganization?.id &&
+                'bg-surface-muted font-medium',
+            )}
           >
             <Building2 className="size-4" aria-hidden />
             <span className="truncate">{org.name}</span>
@@ -316,7 +341,9 @@ function Topbar({ onOpenNav }: { onOpenNav: () => void }) {
       .map((w: string) => w[0])
       .join('')
       .toUpperCase()
-      .slice(0, 2) ?? user?.email?.[0]?.toUpperCase() ?? '?';
+      .slice(0, 2) ??
+    user?.email?.[0]?.toUpperCase() ??
+    '?';
 
   return (
     <header className="border-line bg-surface flex h-14 shrink-0 items-center gap-2 border-b px-4">
@@ -334,11 +361,18 @@ function Topbar({ onOpenNav }: { onOpenNav: () => void }) {
 
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant="ghost" size="icon" onClick={cycle} aria-label="Switch colour theme">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={cycle}
+            aria-label="Switch colour theme"
+          >
             {isDark ? <Moon /> : <Sun />}
           </Button>
         </TooltipTrigger>
-        <TooltipContent>{isDark ? 'Switch to light' : 'Switch to dark'}</TooltipContent>
+        <TooltipContent>
+          {isDark ? 'Switch to light' : 'Switch to dark'}
+        </TooltipContent>
       </Tooltip>
 
       <DropdownMenu>
@@ -348,7 +382,9 @@ function Topbar({ onOpenNav }: { onOpenNav: () => void }) {
             className="hover:bg-surface-muted flex items-center gap-2 rounded-md py-1 pr-2 pl-1 transition-colors"
           >
             <Avatar className="size-8">
-              <AvatarFallback className="text-[10px]">{initials}</AvatarFallback>
+              <AvatarFallback className="text-[10px]">
+                {initials}
+              </AvatarFallback>
             </Avatar>
             <span className="hidden text-left sm:block">
               <span className="block max-w-40 truncate text-sm font-medium">
@@ -362,8 +398,12 @@ function Topbar({ onOpenNav }: { onOpenNav: () => void }) {
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-64" align="end">
           <div className="px-2.5 py-2">
-            <p className="truncate text-sm font-medium">{profile?.full_name ?? 'Account'}</p>
-            <p className="text-foreground-muted truncate text-xs">{user?.email}</p>
+            <p className="truncate text-sm font-medium">
+              {profile?.full_name ?? 'Account'}
+            </p>
+            <p className="text-foreground-muted truncate text-xs">
+              {user?.email}
+            </p>
             {role ? (
               <Badge variant="default" className="mt-1.5">
                 {ROLE_LABELS[role] ?? role}

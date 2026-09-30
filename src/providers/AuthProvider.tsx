@@ -21,7 +21,10 @@ interface AuthContextType {
   isLoading: boolean;
   setActiveOrganizationId: (id: string) => void;
   createOrganization: (name: string, timezone?: string) => Promise<string>;
-  updateProfile: (updates: { full_name?: string | null; avatar_url?: string | null }) => Promise<void>;
+  updateProfile: (updates: {
+    full_name?: string | null;
+    avatar_url?: string | null;
+  }) => Promise<void>;
   refreshUserData: () => Promise<void>;
   signOut: () => Promise<void>;
 }
@@ -37,7 +40,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (typeof window === 'undefined') return null;
     return localStorage.getItem(storageKeys.activeOrg);
   });
-  const [activeMembership, setActiveMembership] = useState<Membership | null>(null);
+  const [activeMembership, setActiveMembership] = useState<Membership | null>(
+    null,
+  );
   const [permissions, setPermissions] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -99,7 +104,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
 
       // Find active membership & fetch permissions
-      const activeMember = memberships.find((m) => m.organization_id === currentOrgId) ?? null;
+      const activeMember =
+        memberships.find((m) => m.organization_id === currentOrgId) ?? null;
       setActiveMembership(activeMember);
 
       if (activeMember?.role_key) {
@@ -217,7 +223,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const activeOrganization =
     organizations.find((o) => o.id === activeOrgId) ?? organizations[0] ?? null;
 
-  const updateProfile = async (updates: { full_name?: string | null; avatar_url?: string | null }) => {
+  const updateProfile = async (updates: {
+    full_name?: string | null;
+    avatar_url?: string | null;
+  }) => {
     if (!user) throw new Error('Not signed in');
     const { error } = await supabase
       .from('profiles')

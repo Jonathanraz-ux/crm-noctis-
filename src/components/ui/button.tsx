@@ -15,9 +15,12 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        primary: 'bg-primary text-on-primary hover:bg-primary-hover active:bg-primary-active',
-        secondary: 'bg-surface text-foreground border border-line hover:bg-surface-muted',
-        ghost: 'text-foreground-muted hover:bg-surface-muted hover:text-foreground',
+        primary:
+          'bg-primary text-on-primary hover:bg-primary-hover active:bg-primary-active',
+        secondary:
+          'bg-surface text-foreground border border-line hover:bg-surface-muted',
+        ghost:
+          'text-foreground-muted hover:bg-surface-muted hover:text-foreground',
         danger: 'bg-danger text-on-primary hover:bg-danger-hover',
         outline: 'border border-line text-foreground hover:bg-surface-muted',
         link: 'text-primary underline-offset-4 hover:underline',
@@ -34,7 +37,9 @@ const buttonVariants = cva(
   },
 );
 
-export type ButtonVariant = NonNullable<VariantProps<typeof buttonVariants>['variant']>;
+export type ButtonVariant = NonNullable<
+  VariantProps<typeof buttonVariants>['variant']
+>;
 
 export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> &
   VariantProps<typeof buttonVariants> & {
@@ -58,7 +63,10 @@ export function Button({
 }: ButtonProps) {
   if (asChild) {
     return (
-      <Slot className={cn(buttonVariants({ variant, size }), className)} {...props}>
+      <Slot
+        className={cn(buttonVariants({ variant, size }), className)}
+        {...props}
+      >
         {children}
       </Slot>
     );

@@ -29,7 +29,11 @@ export class ErrorBoundary extends Component<Props, State> {
   componentDidCatch(error: Error, info: ErrorInfo) {
     // Left as a console report on purpose: the kit does not ship a telemetry
     // vendor, and a buyer will want to plug in their own.
-    console.error('[noctis-crm] unhandled render error', error, info.componentStack);
+    console.error(
+      '[noctis-crm] unhandled render error',
+      error,
+      info.componentStack,
+    );
   }
 
   render() {
@@ -45,18 +49,24 @@ export class ErrorBoundary extends Component<Props, State> {
           <div className="space-y-1.5">
             <h1 className="text-lg font-semibold">Something went wrong</h1>
             <p className="text-foreground-muted text-sm">
-              {product.name} hit an unexpected error and stopped rendering this screen. The details
-              are in the browser console.
+              {product.name} hit an unexpected error and stopped rendering this
+              screen. The details are in the browser console.
             </p>
           </div>
           <pre className="scrollbar-slim bg-surface-muted text-foreground-muted max-h-32 overflow-auto rounded-md p-3 text-left text-xs">
             {error.message}
           </pre>
           <div className="flex justify-center gap-2">
-            <Button variant="secondary" onClick={() => this.setState({ error: null })}>
+            <Button
+              variant="secondary"
+              onClick={() => this.setState({ error: null })}
+            >
               Try again
             </Button>
-            <Button onClick={() => window.location.reload()} leftIcon={<RefreshCw />}>
+            <Button
+              onClick={() => window.location.reload()}
+              leftIcon={<RefreshCw />}
+            >
               Reload
             </Button>
           </div>

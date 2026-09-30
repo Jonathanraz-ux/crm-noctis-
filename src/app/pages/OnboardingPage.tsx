@@ -5,7 +5,10 @@ import { Kanban } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { NoctisField } from '@/components/noctis-field';
-import { organizationCreateSchema, type OrganizationCreateInput } from '@/lib/validation';
+import {
+  organizationCreateSchema,
+  type OrganizationCreateInput,
+} from '@/lib/validation';
 import { useAuth } from '@/providers/AuthProvider';
 import { useToast } from '@/providers/ToastProvider';
 import { product } from '@/config/product';
@@ -39,14 +42,15 @@ export function OnboardingPage() {
 
   return (
     <div className="bg-surface-subtle flex min-h-screen items-center justify-center p-4">
-      <div className="bg-surface border-line w-full max-w-md space-y-6 rounded-lg border p-8 shadow-md animate-fade-in">
-        <div className="text-center space-y-2">
+      <div className="bg-surface border-line animate-fade-in w-full max-w-md space-y-6 rounded-lg border p-8 shadow-md">
+        <div className="space-y-2 text-center">
           <span className="bg-primary text-on-primary mx-auto grid size-10 place-items-center rounded-lg">
             <Kanban className="size-5" />
           </span>
           <h1 className="text-2xl font-semibold">Create your workspace</h1>
           <p className="text-foreground-muted text-sm">
-            A workspace is your team's shared CRM environment in {product.shortName}.
+            A workspace is your team's shared CRM environment in{' '}
+            {product.shortName}.
           </p>
         </div>
 
@@ -74,7 +78,7 @@ export function OnboardingPage() {
         <button
           type="button"
           onClick={signOut}
-          className="text-foreground-muted hover:text-foreground text-xs font-medium cursor-pointer"
+          className="text-foreground-muted hover:text-foreground cursor-pointer text-xs font-medium"
         >
           Sign out instead
         </button>

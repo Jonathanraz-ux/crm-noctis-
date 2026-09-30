@@ -18,7 +18,9 @@ export type ProspectSortColumn = (typeof PROSPECT_SORT_COLUMNS)[number];
  * Validates and safely resolves a sort column against an explicit allowlist.
  * Guarantees that user-controlled sort strings cannot be turned into SQL injection.
  */
-export function safeSortColumn(column: string | undefined | null): ProspectSortColumn {
+export function safeSortColumn(
+  column: string | undefined | null,
+): ProspectSortColumn {
   if (!column) return 'created_at';
   const clean = column.trim().toLowerCase();
   if (PROSPECT_SORT_COLUMNS.includes(clean as ProspectSortColumn)) {
@@ -67,10 +69,14 @@ export async function listProspects({
 
   if (search && search.trim()) {
     const term = search.trim();
-    query = query.or(`name.ilike.%${term}%,company.ilike.%${term}%,email.ilike.%${term}%`);
+    query = query.or(
+      `name.ilike.%${term}%,company.ilike.%${term}%,email.ilike.%${term}%`,
+    );
   }
 
-  query = query.order(safeSort, { ascending: sortOrder === 'asc' }).range(from, to);
+  query = query
+    .order(safeSort, { ascending: sortOrder === 'asc' })
+    .range(from, to);
 
   const { data, count, error } = await query;
   if (error) throw error;
@@ -93,7 +99,10 @@ export async function getProspectById(organizationId: string, id: string) {
   return data as Prospect;
 }
 
-export async function createProspect(organizationId: string, input: ProspectInput) {
+export async function createProspect(
+  organizationId: string,
+  input: ProspectInput,
+) {
   const { data, error } = await supabase
     .from('prospects')
     .insert({

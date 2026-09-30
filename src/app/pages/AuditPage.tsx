@@ -6,7 +6,11 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge, Select } from '@/components/ui/primitives';
 import { useAuth } from '@/providers/AuthProvider';
-import { AUDIT_PAGE_SIZE, useAuditEntities, useAuditLog } from '@/features/audit/audit.hooks';
+import {
+  AUDIT_PAGE_SIZE,
+  useAuditEntities,
+  useAuditLog,
+} from '@/features/audit/audit.hooks';
 import { formatDate } from '@/lib/format';
 import { toErrorMessage } from '@/lib/errors';
 
@@ -32,7 +36,7 @@ export function AuditPage() {
 
   if (!can('audit.read')) {
     return (
-      <div className="space-y-4 animate-fade-in">
+      <div className="animate-fade-in space-y-4">
         <PageHeader
           title="Audit Log"
           description="Your role does not include permission to read the audit log."
@@ -45,21 +49,24 @@ export function AuditPage() {
   const lastPage = Math.max(1, Math.ceil(total / AUDIT_PAGE_SIZE));
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="animate-fade-in space-y-6">
       <PageHeader
         title="Audit Log"
         description="Append-only record of domain activity written by database triggers."
       />
 
       {error ? (
-        <p role="alert" className="bg-danger-soft text-danger rounded-md px-3 py-2 text-sm">
+        <p
+          role="alert"
+          className="bg-danger-soft text-danger rounded-md px-3 py-2 text-sm"
+        >
           {toErrorMessage(error, 'The audit log could not be loaded.')}
         </p>
       ) : null}
 
-      <div className="flex flex-col sm:flex-row gap-3">
+      <div className="flex flex-col gap-3 sm:flex-row">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-foreground-muted pointer-events-none" />
+          <Search className="text-foreground-muted pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2" />
           <input
             type="text"
             placeholder="Filter current page by actor, action or ID..."
@@ -68,7 +75,7 @@ export function AuditPage() {
               setSearch(e.target.value);
               setPage(1);
             }}
-            className="w-full h-9 pl-9 pr-3 rounded-md bg-surface border border-border text-sm placeholder:text-foreground-muted focus:outline-none focus:ring-1 focus:ring-primary"
+            className="bg-surface border-border placeholder:text-foreground-muted focus:ring-primary h-9 w-full rounded-md border pr-3 pl-9 text-sm focus:ring-1 focus:outline-none"
           />
         </div>
 
@@ -91,27 +98,32 @@ export function AuditPage() {
 
       <Card className="overflow-hidden">
         {isLoading ? (
-          <div className="p-6 text-center text-sm text-foreground-muted">Loading audit entries...</div>
+          <div className="text-foreground-muted p-6 text-center text-sm">
+            Loading audit entries...
+          </div>
         ) : rows.length === 0 ? (
-          <div className="p-8 text-center text-sm text-foreground-muted">
+          <div className="text-foreground-muted p-8 text-center text-sm">
             No audit records found matching your filters.
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm border-collapse">
+            <table className="w-full border-collapse text-left text-sm">
               <thead>
-                <tr className="border-b border-line bg-surface-subtle text-xs font-semibold uppercase text-foreground-muted">
-                  <th className="py-3 px-4">Action</th>
-                  <th className="py-3 px-4">Entity</th>
-                  <th className="py-3 px-4">Actor</th>
-                  <th className="py-3 px-4">Entity ID</th>
-                  <th className="py-3 px-4">Timestamp</th>
+                <tr className="border-line bg-surface-subtle text-foreground-muted border-b text-xs font-semibold uppercase">
+                  <th className="px-4 py-3">Action</th>
+                  <th className="px-4 py-3">Entity</th>
+                  <th className="px-4 py-3">Actor</th>
+                  <th className="px-4 py-3">Entity ID</th>
+                  <th className="px-4 py-3">Timestamp</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-line">
+              <tbody className="divide-line divide-y">
                 {rows.map((row) => (
-                  <tr key={row.id} className="hover:bg-surface-subtle/50 transition-colors">
-                    <td className="py-3 px-4">
+                  <tr
+                    key={row.id}
+                    className="hover:bg-surface-subtle/50 transition-colors"
+                  >
+                    <td className="px-4 py-3">
                       <Badge
                         variant={
                           row.action === 'INSERT'
@@ -124,14 +136,16 @@ export function AuditPage() {
                         {row.action}
                       </Badge>
                     </td>
-                    <td className="py-3 px-4 font-mono text-xs text-foreground">{row.entity}</td>
-                    <td className="py-3 px-4 text-xs text-foreground truncate max-w-xs">
+                    <td className="text-foreground px-4 py-3 font-mono text-xs">
+                      {row.entity}
+                    </td>
+                    <td className="text-foreground max-w-xs truncate px-4 py-3 text-xs">
                       {row.actor_email ?? 'System / Anonymous'}
                     </td>
-                    <td className="py-3 px-4 text-xs font-mono text-foreground-muted truncate max-w-xs">
+                    <td className="text-foreground-muted max-w-xs truncate px-4 py-3 font-mono text-xs">
                       {row.entity_id ?? '—'}
                     </td>
-                    <td className="py-3 px-4 text-xs text-foreground-muted">
+                    <td className="text-foreground-muted px-4 py-3 text-xs">
                       {formatDate(row.created_at)}
                     </td>
                   </tr>
@@ -142,7 +156,7 @@ export function AuditPage() {
         )}
 
         {total > AUDIT_PAGE_SIZE && (
-          <div className="flex items-center justify-between border-t border-line px-4 py-3 text-xs text-foreground-muted">
+          <div className="border-line text-foreground-muted flex items-center justify-between border-t px-4 py-3 text-xs">
             <span>
               Page {page} of {lastPage} ({total} entries)
             </span>

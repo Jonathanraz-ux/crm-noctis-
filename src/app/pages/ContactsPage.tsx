@@ -8,7 +8,10 @@ import { Button } from '@/components/ui/button';
 import { NoctisField } from '@/components/noctis-field';
 import { useAuth } from '@/providers/AuthProvider';
 import { useToast } from '@/providers/ToastProvider';
-import { useContacts, useDeleteContact } from '@/features/contacts/contacts.hooks';
+import {
+  useContacts,
+  useDeleteContact,
+} from '@/features/contacts/contacts.hooks';
 import { ContactModal } from '@/features/contacts/ContactModal';
 import type { Contact } from '@/lib/types/database';
 import { formatDate } from '@/lib/format';
@@ -56,7 +59,10 @@ export function ContactsPage() {
   const handleDelete = async () => {
     if (!deleteTarget) return;
     try {
-      await deleteMutation.mutateAsync({ organizationId: orgId, id: deleteTarget.id });
+      await deleteMutation.mutateAsync({
+        organizationId: orgId,
+        id: deleteTarget.id,
+      });
       success('Contact deleted');
     } catch (caught) {
       toastError('Delete failed', toErrorMessage(caught));
@@ -66,14 +72,11 @@ export function ContactsPage() {
 
   const handleExport = () => {
     if (!data?.contacts?.length) return;
-    exportCsv(data.contacts, `contacts-${new Date().toISOString().slice(0, 10)}.csv`, [
-      'name',
-      'email',
-      'phone',
-      'company',
-      'job_title',
-      'created_at',
-    ]);
+    exportCsv(
+      data.contacts,
+      `contacts-${new Date().toISOString().slice(0, 10)}.csv`,
+      ['name', 'email', 'phone', 'company', 'job_title', 'created_at'],
+    );
   };
 
   const columns: Column<Contact>[] = [
@@ -86,14 +89,25 @@ export function ContactsPage() {
       key: 'created_at',
       header: 'Created',
       sortable: true,
-      render: (row) => <span className="text-foreground-muted">{formatDate(row.created_at)}</span>,
+      render: (row) => (
+        <span className="text-foreground-muted">
+          {formatDate(row.created_at)}
+        </span>
+      ),
     },
   ];
 
   return (
-    <div className="space-y-5 animate-fade-in">
-      <PageHeader title="Contacts" description="Manage your customer and partner contacts.">
-        <Button leftIcon={<Download className="size-4" />} variant="secondary" onClick={handleExport}>
+    <div className="animate-fade-in space-y-5">
+      <PageHeader
+        title="Contacts"
+        description="Manage your customer and partner contacts."
+      >
+        <Button
+          leftIcon={<Download className="size-4" />}
+          variant="secondary"
+          onClick={handleExport}
+        >
           Export
         </Button>
         <Button
@@ -122,7 +136,7 @@ export function ContactsPage() {
             setSearch('');
             setPage(1);
           }}
-          leadingElement={<Search className="size-4 text-foreground-subtle" />}
+          leadingElement={<Search className="text-foreground-subtle size-4" />}
         />
       </div>
 

@@ -14,16 +14,29 @@ interface StatCardProps {
   className?: string;
 }
 
-export function StatCard({ title, value, description, icon, trend, className }: StatCardProps) {
+export function StatCard({
+  title,
+  value,
+  description,
+  icon,
+  trend,
+  className,
+}: StatCardProps) {
   return (
     <Card className={cn('overflow-hidden', className)}>
       <CardContent className="p-5">
         <div className="flex items-center justify-between">
-          <p className="text-xs font-medium text-foreground-muted tracking-wide uppercase">{title}</p>
-          {icon ? <div className="text-primary size-5 shrink-0">{icon}</div> : null}
+          <p className="text-foreground-muted text-xs font-medium tracking-wide uppercase">
+            {title}
+          </p>
+          {icon ? (
+            <div className="text-primary size-5 shrink-0">{icon}</div>
+          ) : null}
         </div>
         <div className="mt-2 flex items-baseline gap-2">
-          <p className="text-2xl font-bold tracking-tight text-foreground tabular">{value}</p>
+          <p className="text-foreground tabular text-2xl font-bold tracking-tight">
+            {value}
+          </p>
           {trend ? (
             <span
               className={cn(
@@ -36,7 +49,7 @@ export function StatCard({ title, value, description, icon, trend, className }: 
           ) : null}
         </div>
         {description ? (
-          <p className="mt-1 text-xs text-foreground-subtle">{description}</p>
+          <p className="text-foreground-subtle mt-1 text-xs">{description}</p>
         ) : null}
       </CardContent>
     </Card>

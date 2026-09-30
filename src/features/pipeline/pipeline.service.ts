@@ -13,7 +13,9 @@ export const DEAL_SORT_COLUMNS = [
 
 export type DealSortColumn = (typeof DEAL_SORT_COLUMNS)[number];
 
-export function safeSortColumn(column: string | undefined | null): DealSortColumn {
+export function safeSortColumn(
+  column: string | undefined | null,
+): DealSortColumn {
   if (!column) return 'created_at';
   const clean = column.trim().toLowerCase();
   if (DEAL_SORT_COLUMNS.includes(clean as DealSortColumn)) {
@@ -51,7 +53,9 @@ export async function listDeals({
 
   let query = supabase
     .from('deals')
-    .select('*, prospects(name, company), contacts(name, email)', { count: 'exact' })
+    .select('*, prospects(name, company), contacts(name, email)', {
+      count: 'exact',
+    })
     .eq('organization_id', organizationId);
 
   if (stage && stage !== 'all') {
@@ -71,13 +75,15 @@ export async function listDeals({
     query = query.ilike('title', `%${term}%`);
   }
 
-  query = query.order(safeSort, { ascending: sortOrder === 'asc' }).range(from, to);
+  query = query
+    .order(safeSort, { ascending: sortOrder === 'asc' })
+    .range(from, to);
 
   const { data, count, error } = await query;
   if (error) throw error;
 
   return {
-    deals: ((data ?? []) as unknown) as (Deal & {
+    deals: (data ?? []) as unknown as (Deal & {
       prospects?: { name: string; company: string | null } | null;
       contacts?: { name: string; email: string | null } | null;
     })[],

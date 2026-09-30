@@ -115,7 +115,9 @@ export function ContactModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-xl">
         <DialogHeader>
-          <DialogTitle>{isEditing ? 'Edit Contact' : 'Add New Contact'}</DialogTitle>
+          <DialogTitle>
+            {isEditing ? 'Edit Contact' : 'Add New Contact'}
+          </DialogTitle>
           <DialogDescription>
             {isEditing
               ? 'Update contact details and account associations.'
@@ -124,7 +126,7 @@ export function ContactModal({
         </DialogHeader>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 pt-2">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Controller
               name="name"
               control={control}
@@ -157,7 +159,7 @@ export function ContactModal({
             />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Controller
               name="email"
               control={control}
@@ -191,7 +193,7 @@ export function ContactModal({
             />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Controller
               name="company"
               control={control}
@@ -208,7 +210,9 @@ export function ContactModal({
             />
 
             <div className="space-y-1.5">
-              <Label htmlFor="prospect-link-select">Linked Prospect / Account</Label>
+              <Label htmlFor="prospect-link-select">
+                Linked Prospect / Account
+              </Label>
               <Controller
                 name="prospect_id"
                 control={control}

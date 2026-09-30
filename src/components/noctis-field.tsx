@@ -12,7 +12,8 @@ import { cn } from '@/lib/utils';
  * and password toggle, keeping accessibility wiring (`aria-describedby`) unified.
  */
 
-export type NoctisFieldType = 'text' | 'email' | 'password' | 'search' | 'tel' | 'url' | 'number';
+export type NoctisFieldType =
+  'text' | 'email' | 'password' | 'search' | 'tel' | 'url' | 'number';
 
 export type NoctisFieldSize = 'sm' | 'md' | 'lg';
 
@@ -56,224 +57,248 @@ const CONTROL_BUTTON =
   'items-center justify-center rounded-sm border-0 bg-transparent p-0 ' +
   'motion-safe:transition-colors cursor-pointer';
 
-export const NoctisField = forwardRef<HTMLInputElement, NoctisFieldProps>(function NoctisField(
-  {
-    id: idProp,
-    label,
-    name,
-    type = 'text',
-    placeholder,
-    value,
-    defaultValue,
-    onChange,
-    onBlur,
-    disabled = false,
-    readOnly = false,
-    required = false,
-    autoComplete,
-    helperText,
-    errorMessage,
-    successMessage,
-    leadingElement,
-    trailingElement,
-    clearable = false,
-    onClear,
-    showCharacterCount = false,
-    maxLength,
-    size = 'md',
-    fullWidth = false,
-    className,
-    inputClassName,
-    'aria-label': ariaLabel,
-    ...rest
-  },
-  ref,
-) {
-  const generatedId = useId();
-  const inputId = idProp ?? `noctis-field-${generatedId}`;
-
-  const inputRef = useRef<HTMLInputElement | null>(null);
-  const [showPassword, setShowPassword] = useState(false);
-  const isControlled = value !== undefined;
-  const [internalValue, setInternalValue] = useState(() => {
-    const initial = value !== undefined ? value : defaultValue;
-    return initial === undefined || initial === null ? '' : String(initial);
-  });
-
-  const displayValue = isControlled
-    ? value === undefined || value === null
-      ? ''
-      : String(value)
-    : internalValue;
-
-  const hasError = Boolean(errorMessage);
-  const hasSuccess = Boolean(successMessage);
-  const message = hasError ? errorMessage : hasSuccess ? successMessage : helperText;
-
-  const messageId = message ? `${inputId}-message` : undefined;
-  const counterId = showCharacterCount ? `${inputId}-count` : undefined;
-  const describedBy = [messageId, counterId].filter(Boolean).join(' ') || undefined;
-
-  const setRefs = useCallback(
-    (node: HTMLInputElement | null) => {
-      inputRef.current = node;
-      if (typeof ref === 'function') {
-        ref(node);
-      } else if (ref) {
-        ref.current = node;
-      }
+export const NoctisField = forwardRef<HTMLInputElement, NoctisFieldProps>(
+  function NoctisField(
+    {
+      id: idProp,
+      label,
+      name,
+      type = 'text',
+      placeholder,
+      value,
+      defaultValue,
+      onChange,
+      onBlur,
+      disabled = false,
+      readOnly = false,
+      required = false,
+      autoComplete,
+      helperText,
+      errorMessage,
+      successMessage,
+      leadingElement,
+      trailingElement,
+      clearable = false,
+      onClear,
+      showCharacterCount = false,
+      maxLength,
+      size = 'md',
+      fullWidth = false,
+      className,
+      inputClassName,
+      'aria-label': ariaLabel,
+      ...rest
     },
-    [ref],
-  );
+    ref,
+  ) {
+    const generatedId = useId();
+    const inputId = idProp ?? `noctis-field-${generatedId}`;
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const nextValue = event.target.value;
-    if (!isControlled) setInternalValue(nextValue);
-    onChange?.(nextValue, event);
-  };
+    const inputRef = useRef<HTMLInputElement | null>(null);
+    const [showPassword, setShowPassword] = useState(false);
+    const isControlled = value !== undefined;
+    const [internalValue, setInternalValue] = useState(() => {
+      const initial = value !== undefined ? value : defaultValue;
+      return initial === undefined || initial === null ? '' : String(initial);
+    });
 
-  const handleClear = () => {
-    if (!isControlled) setInternalValue('');
-    onChange?.('');
-    onClear?.();
-    inputRef.current?.focus();
-  };
+    const displayValue = isControlled
+      ? value === undefined || value === null
+        ? ''
+        : String(value)
+      : internalValue;
 
-  const isClearVisible = clearable && displayValue.length > 0 && !disabled && !readOnly;
-  const counterText =
-    maxLength !== undefined ? `${displayValue.length} / ${maxLength}` : String(displayValue.length);
+    const hasError = Boolean(errorMessage);
+    const hasSuccess = Boolean(successMessage);
+    const message = hasError
+      ? errorMessage
+      : hasSuccess
+        ? successMessage
+        : helperText;
 
-  return (
-    <div
-      className={cn(
-        'text-foreground inline-flex flex-col gap-1.5 text-left',
-        fullWidth && 'w-full',
-        className,
-      )}
-    >
-      {label || showCharacterCount ? (
-        <div className="flex w-full items-baseline justify-between gap-2">
-          {label ? (
-            <label htmlFor={inputId} className="text-foreground text-xs font-medium">
-              {label}
-              {required ? (
-                <span className="text-danger ml-0.5 font-semibold" aria-hidden>
-                  *
-                </span>
-              ) : null}
-            </label>
+    const messageId = message ? `${inputId}-message` : undefined;
+    const counterId = showCharacterCount ? `${inputId}-count` : undefined;
+    const describedBy =
+      [messageId, counterId].filter(Boolean).join(' ') || undefined;
+
+    const setRefs = useCallback(
+      (node: HTMLInputElement | null) => {
+        inputRef.current = node;
+        if (typeof ref === 'function') {
+          ref(node);
+        } else if (ref) {
+          ref.current = node;
+        }
+      },
+      [ref],
+    );
+
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+      const nextValue = event.target.value;
+      if (!isControlled) setInternalValue(nextValue);
+      onChange?.(nextValue, event);
+    };
+
+    const handleClear = () => {
+      if (!isControlled) setInternalValue('');
+      onChange?.('');
+      onClear?.();
+      inputRef.current?.focus();
+    };
+
+    const isClearVisible =
+      clearable && displayValue.length > 0 && !disabled && !readOnly;
+    const counterText =
+      maxLength !== undefined
+        ? `${displayValue.length} / ${maxLength}`
+        : String(displayValue.length);
+
+    return (
+      <div
+        className={cn(
+          'text-foreground inline-flex flex-col gap-1.5 text-left',
+          fullWidth && 'w-full',
+          className,
+        )}
+      >
+        {label || showCharacterCount ? (
+          <div className="flex w-full items-baseline justify-between gap-2">
+            {label ? (
+              <label
+                htmlFor={inputId}
+                className="text-foreground text-xs font-medium"
+              >
+                {label}
+                {required ? (
+                  <span
+                    className="text-danger ml-0.5 font-semibold"
+                    aria-hidden
+                  >
+                    *
+                  </span>
+                ) : null}
+              </label>
+            ) : null}
+            {showCharacterCount ? (
+              <span
+                id={counterId}
+                className="text-foreground-subtle text-xs tabular-nums"
+                aria-live="off"
+              >
+                {counterText}
+              </span>
+            ) : null}
+          </div>
+        ) : null}
+
+        <div
+          className={cn(
+            WRAP,
+            SIZES[size],
+            disabled && 'bg-surface-disabled cursor-not-allowed',
+            readOnly && 'bg-surface-subtle',
+            hasError && 'border-danger has-[input:focus-visible]:border-danger',
+            hasSuccess && 'border-success',
+            !disabled &&
+              !readOnly &&
+              !hasError &&
+              !hasSuccess &&
+              'hover:border-line-strong',
+          )}
+        >
+          {leadingElement ? (
+            <span className="text-foreground-subtle flex shrink-0 items-center pl-3">
+              {leadingElement}
+            </span>
           ) : null}
-          {showCharacterCount ? (
-            <span
-              id={counterId}
-              className="text-foreground-subtle text-xs tabular-nums"
-              aria-live="off"
+
+          <input
+            ref={setRefs}
+            id={inputId}
+            name={name}
+            type={showPassword ? 'text' : type}
+            placeholder={placeholder}
+            value={displayValue}
+            onChange={handleChange}
+            onBlur={onBlur}
+            disabled={disabled}
+            readOnly={readOnly}
+            required={required}
+            aria-required={required}
+            aria-label={ariaLabel}
+            autoComplete={autoComplete}
+            maxLength={maxLength}
+            aria-invalid={hasError ? true : undefined}
+            aria-describedby={describedBy}
+            className={cn(
+              'text-foreground placeholder:text-foreground-subtle h-full min-w-0 flex-1',
+              'appearance-none border-0 bg-transparent px-3 text-sm outline-none',
+              'disabled:text-foreground-disabled disabled:cursor-not-allowed',
+              '[&::-ms-clear]:hidden [&::-ms-reveal]:hidden',
+              '[&::-webkit-search-cancel-button]:appearance-none',
+              '[&::-webkit-search-decoration]:appearance-none',
+              '[&::-webkit-search-results-button]:appearance-none',
+              '[&::-webkit-search-results-decoration]:appearance-none',
+              inputClassName,
+            )}
+            {...rest}
+          />
+
+          {isClearVisible ? (
+            <button
+              type="button"
+              className={cn(CONTROL_BUTTON, 'mr-1')}
+              onClick={handleClear}
+              aria-label="Clear field"
             >
-              {counterText}
+              <X size={14} aria-hidden />
+            </button>
+          ) : null}
+
+          {type === 'password' && !disabled ? (
+            <button
+              type="button"
+              className={cn(CONTROL_BUTTON, 'mr-1')}
+              onClick={() => setShowPassword((current) => !current)}
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
+              aria-pressed={showPassword}
+            >
+              {showPassword ? (
+                <EyeOff size={16} aria-hidden />
+              ) : (
+                <Eye size={16} aria-hidden />
+              )}
+            </button>
+          ) : null}
+
+          {trailingElement ? (
+            <span className="text-foreground-subtle flex shrink-0 items-center pr-3">
+              {trailingElement}
             </span>
           ) : null}
         </div>
-      ) : null}
 
-      <div
-        className={cn(
-          WRAP,
-          SIZES[size],
-          disabled && 'bg-surface-disabled cursor-not-allowed',
-          readOnly && 'bg-surface-subtle',
-          hasError && 'border-danger has-[input:focus-visible]:border-danger',
-          hasSuccess && 'border-success',
-          !disabled && !readOnly && !hasError && !hasSuccess && 'hover:border-line-strong',
-        )}
-      >
-        {leadingElement ? (
-          <span className="text-foreground-subtle flex shrink-0 items-center pl-3">
-            {leadingElement}
-          </span>
-        ) : null}
-
-        <input
-          ref={setRefs}
-          id={inputId}
-          name={name}
-          type={showPassword ? 'text' : type}
-          placeholder={placeholder}
-          value={displayValue}
-          onChange={handleChange}
-          onBlur={onBlur}
-          disabled={disabled}
-          readOnly={readOnly}
-          required={required}
-          aria-required={required}
-          aria-label={ariaLabel}
-          autoComplete={autoComplete}
-          maxLength={maxLength}
-          aria-invalid={hasError ? true : undefined}
-          aria-describedby={describedBy}
-          className={cn(
-            'text-foreground placeholder:text-foreground-subtle h-full min-w-0 flex-1',
-            'appearance-none border-0 bg-transparent px-3 text-sm outline-none',
-            'disabled:text-foreground-disabled disabled:cursor-not-allowed',
-            '[&::-ms-clear]:hidden [&::-ms-reveal]:hidden',
-            '[&::-webkit-search-cancel-button]:appearance-none',
-            '[&::-webkit-search-decoration]:appearance-none',
-            '[&::-webkit-search-results-button]:appearance-none',
-            '[&::-webkit-search-results-decoration]:appearance-none',
-            inputClassName,
-          )}
-          {...rest}
-        />
-
-        {isClearVisible ? (
-          <button
-            type="button"
-            className={cn(CONTROL_BUTTON, 'mr-1')}
-            onClick={handleClear}
-            aria-label="Clear field"
-          >
-            <X size={14} aria-hidden />
-          </button>
-        ) : null}
-
-        {type === 'password' && !disabled ? (
-          <button
-            type="button"
-            className={cn(CONTROL_BUTTON, 'mr-1')}
-            onClick={() => setShowPassword((current) => !current)}
-            aria-label={showPassword ? 'Hide password' : 'Show password'}
-            aria-pressed={showPassword}
-          >
-            {showPassword ? <EyeOff size={16} aria-hidden /> : <Eye size={16} aria-hidden />}
-          </button>
-        ) : null}
-
-        {trailingElement ? (
-          <span className="text-foreground-subtle flex shrink-0 items-center pr-3">
-            {trailingElement}
-          </span>
+        {message ? (
+          <div className="flex items-start gap-1 text-xs" aria-live="polite">
+            <span
+              id={messageId}
+              className={cn(
+                'flex items-start gap-1',
+                hasError && 'text-danger font-medium',
+                hasSuccess && 'text-success',
+                !hasError && !hasSuccess && 'text-foreground-muted',
+              )}
+            >
+              {hasError ? (
+                <CircleAlert size={14} className="mt-px shrink-0" aria-hidden />
+              ) : hasSuccess ? (
+                <CircleCheck size={14} className="mt-px shrink-0" aria-hidden />
+              ) : null}
+              {message}
+            </span>
+          </div>
         ) : null}
       </div>
-
-      {message ? (
-        <div className="flex items-start gap-1 text-xs" aria-live="polite">
-          <span
-            id={messageId}
-            className={cn(
-              'flex items-start gap-1',
-              hasError && 'text-danger font-medium',
-              hasSuccess && 'text-success',
-              !hasError && !hasSuccess && 'text-foreground-muted',
-            )}
-          >
-            {hasError ? (
-              <CircleAlert size={14} className="mt-px shrink-0" aria-hidden />
-            ) : hasSuccess ? (
-              <CircleCheck size={14} className="mt-px shrink-0" aria-hidden />
-            ) : null}
-            {message}
-          </span>
-        </div>
-      ) : null}
-    </div>
-  );
-});
+    );
+  },
+);

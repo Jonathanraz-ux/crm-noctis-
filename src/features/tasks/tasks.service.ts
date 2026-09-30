@@ -13,7 +13,9 @@ export const TASK_SORT_COLUMNS = [
 
 export type TaskSortColumn = (typeof TASK_SORT_COLUMNS)[number];
 
-export function safeSortColumn(column: string | undefined | null): TaskSortColumn {
+export function safeSortColumn(
+  column: string | undefined | null,
+): TaskSortColumn {
   if (!column) return 'created_at';
   const clean = column.trim().toLowerCase();
   if (TASK_SORT_COLUMNS.includes(clean as TaskSortColumn)) {
@@ -83,7 +85,9 @@ export async function listTasks({
     query = query.ilike('title', `%${term}%`);
   }
 
-  query = query.order(safeSort, { ascending: sortOrder === 'asc' }).range(from, to);
+  query = query
+    .order(safeSort, { ascending: sortOrder === 'asc' })
+    .range(from, to);
 
   const { data, count, error } = await query;
   if (error) throw error;
