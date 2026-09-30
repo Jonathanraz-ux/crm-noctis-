@@ -1,0 +1,16 @@
+{
+  "name": "noctis-crm-sql-tests",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Boots a real PostgreSQL and asserts the Noctis CRM migrations' security properties. Kept out of the app's own dependencies so a normal install stays small.",
+  "scripts": {
+    "static": "node static.mjs",
+    "behavioural": "node behavioural.mjs",
+    "test": "node static.mjs && node behavioural.mjs"
+  },
+  "devDependencies": {
+    "embedded-postgres": "18.4.0-beta.17",
+    "pg": "^8.23.0"
+  }
+}

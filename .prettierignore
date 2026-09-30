@@ -1,0 +1,6 @@
+dist
+node_modules
+test-results
+coverage
+tests/sql/node_modules
+*.sql
